@@ -1,3 +1,5 @@
+# weather-mood 날씨 기반 감정 일기장
+
 # React + TypeScript + Vite 템플릿
 
 이 저장소는 React, TypeScript, Vite 기반의 공통 개발 템플릿입니다.  
