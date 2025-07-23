@@ -3,6 +3,7 @@ import Home from '../pages/home/Index';
 import Records from '@/pages/records/Index';
 import Layout from '@/components/layout/Layout';
 import NotFound from '@/components/notFound/NotFound';
+import SignupIndex from '@/pages/signup/SignupIndex';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: 'records',
         element: <Records />,
+      },
+      {
+        path: 'signup',
+        element: <SignupIndex />,
       },
     ],
   },
