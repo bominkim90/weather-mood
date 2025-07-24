@@ -1,0 +1,12 @@
+html {
+  font-size: 16px;
+}
+
+html,
+body {
+  @apply relative w-full h-full;
+  background-color: var(--color-bg-secondary);
+  font-family: 'Roboto Variable', sans-serif;
+  line-height: 1.5;
+  color: var(--color-text-default);
+}

@@ -1,0 +1,67 @@
+@theme {
+  /* Light mode colors (default) */
+  --color-bg-default: #fff6f6;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-card: #ffffff;
+
+  --color-text-default: #1f2937;
+  --color-text-secondary: #374151;
+  --color-text-gray: #6b7280;
+  --color-text-muted: #9ca3af;
+
+  --color-main-pink: #ffb6c1;
+  --color-accent: #3b82f6;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Mood colors */
+  --color-mood-default: #f9fafb;
+  --color-mood-happy: #fff9c4;
+  --color-mood-sad: #bbdefb;
+  --color-mood-angry: #ffcdd2;
+  --color-mood-calm: #c8e6c9;
+  --color-mood-excited: #ffe0b2;
+  --color-mood-bored: #e0e0e0;
+
+  /* Border and shadow colors */
+  --color-border: #e5e7eb;
+  --color-border-hover: #d1d5db;
+  --color-shadow: #0000001a;
+
+  /* Font family */
+  --font-family-roboto: 'Roboto Variable', sans-serif;
+}
+
+.dark {
+  /* Background colors for dark mode */
+  --color-bg-default: #1f2937;
+  --color-bg-secondary: #374151;
+  --color-bg-card: #111827;
+
+  /* Text colors for dark mode */
+  --color-text-default: #ffffff;
+  --color-text-gray: #9ca3af;
+  --color-text-muted: #6b7280;
+
+  /* Accent colors for dark mode */
+  --color-main-pink: #f472b6;
+  --color-accent: #60a5fa;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+
+  /* Mood colors for dark mode */
+  --color-mood-default: #374151;
+  --color-mood-happy: #fcd34d;
+  --color-mood-sad: #60a5fa;
+  --color-mood-angry: #f87171;
+  --color-mood-calm: #34d399;
+  --color-mood-excited: #fbbf24;
+  --color-mood-bored: #6b7280;
+
+  /* Border and shadow colors for dark mode */
+  --color-border: #4b5563;
+  --color-border-hover: #6b7280;
+  --color-shadow: #0000004d;
+}

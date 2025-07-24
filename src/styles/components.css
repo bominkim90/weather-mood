@@ -1,0 +1,12 @@
+.box-white {
+  @apply bg-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)];
+}
+.box-white.lg {
+  @apply rounded-[24px] p-6;
+}
+.box-white.md {
+  @apply rounded-[20px] p-4;
+}
+.box-white.sm {
+  @apply rounded-[20px] p-[12px_16px];
+}
