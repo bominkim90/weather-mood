@@ -22,21 +22,27 @@ const axiosInstance = axios.create({
 // );
 
 // 공통 응답 처리 (토큰 만료, 에러 메시지 처리)
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response) {
-//       const { status } = error.response;
-//       if (status === 401) {
-//         // 예: 토큰 만료 → 로그아웃 처리
-//         console.warn('로그인이 만료되었습니다.');
-//         // 예: location.replace('/login') 또는 상태 초기화 등
-//       } else if (status === 500) {
-//         console.error('서버 오류 발생');
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  // 정상 응답 시 실행되는 콜백
+  // 받은 응답을 그대로 반환 : 여기서 응답을 가공해서 반환하거나 할 수 있음
+  (response) => response,
+
+  // 에러 발생 시 실행되는 콜백
+  // HTTP 에러 또는 네트워크 에러 등 모든 axios 에러 처리
+  (error) => {
+    if (error.response) {
+      // HTTP에러가 아닌, 네트워크 에러라면 error.response가 없을 수 있음
+      const { status } = error.response;
+      if (status === 401) {
+        // jwt 만료 or 로그인 안 함 => 로그인 페이지로 이동
+        window.location.href = '/login';
+        console.log('로그인이 필요합니다.');
+      } else if (status === 500) {
+        console.error('서버 오류 발생');
+      }
+    }
+    return Promise.reject(error); // 즉시 '실패' 상태의 Promise를 반환 => 사용한곳에서 .catch() 등으로 처리 가능
+  }
+);
 
 export default axiosInstance;
