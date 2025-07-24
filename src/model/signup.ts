@@ -4,3 +4,8 @@ export interface Signup {
   password: string;
   confirmPassword: string;
 }
+
+export interface Location {
+  longitude: number | null;
+  latitude: number | null;
+}
