@@ -1,31 +1,78 @@
-# Gemini PR 리뷰 가이드
+# Gemini PR Review Style Guide
 
 ## Language
 
-- 모든 리뷰는 **한국어**로 작성되어야 합니다.
-- 리뷰 코멘트, 제안, 설명은 모두 한국어로 남겨주세요.
-- 영어로 된 리뷰는 팀이 이해하기 어렵습니다.
+- **All reviews must be written in Korean.**
+- Please write all review comments, suggestions, and explanations in Korean so that the entire team can easily understand.
+- Reviews written in English are discouraged, as they may be difficult for team members to understand.
 
 ## General Review Rules
 
-- 코드가 읽기 쉽고 유지보수가 쉬운지 확인해주세요.
-- 변수명, 함수명 등이 의미를 잘 표현하고 있는지 확인해주세요.
-- 불필요하거나 중복된 코드가 없는지 확인해주세요.
+- Ensure that code is readable and maintainable.
+- Check that variable and function names are meaningful and descriptive.
+- Verify that there is no unnecessary or duplicate code.
 
 ## TypeScript
 
-- 타입은 가능한 한 좁게 지정해주세요.
-  - 예: `any` 대신 구체적인 타입 사용
-  - `string` | `number` 등으로 너무 포괄적인 타입을 피하세요.
-- `unknown`을 사용할 경우, 적절한 타입 가드가 있는지 확인해주세요.
+- Types should be as narrow as possible.
+  - For example, avoid using `any`; use specific types instead.
+  - Avoid overly broad types such as `string | number`.
+
+- When using `unknown`, ensure that proper type guards are implemented.
 
 ## Test
 
-- 모든 기능은 자동화 테스트로 커버되어야 합니다.
-- 유닛 테스트 또는 통합 테스트가 포함되어 있는지 확인해주세요.
-- 테스트가 없는 변경사항은 코멘트를 통해 추가 요청해주세요.
+- All features must be covered by automated tests.
+- Confirm that unit or integration tests are included.
+- If a change is missing tests, request their addition through review comments.
 
 ## Style
 
-- 프로젝트의 Prettier, ESLint 설정을 준수해주세요.
-- 코드 포맷팅이 통일되어 있는지 확인해주세요.
+- Follow the project's Prettier and ESLint configurations.
+- Ensure code formatting is consistent throughout the codebase.
+
+---
+
+<!-- # React Project PR Review Guide
+
+## Language
+- All code reviews and comments must be written in Korean.
+
+## What to Review
+
+1. **Component Design**
+   - Is each component focused on a single responsibility?
+   - Are components split into reusable and presentational parts appropriately?
+
+2. **State Management**
+   - Is state managed at the minimal, correct scope?
+   - Is there any unnecessary prop drilling or global state?
+
+3. **TypeScript Usage**
+   - Are all variables, function parameters, and component props properly typed?
+   - Avoid usage of `any` and overly broad union types.
+
+4. **Naming & Style**
+   - Follow project Prettier and ESLint rules.
+   - Use descriptive and consistent names for variables, functions, and components.
+
+5. **Testing**
+   - Are new features and bug fixes covered by automated tests?
+   - Are there sufficient unit and integration tests?
+
+6. **UI/UX & Accessibility**
+   - Are semantic HTML tags used?
+   - Are accessibility (a11y) considerations (ARIA, keyboard navigation) implemented?
+
+7. **Async & Error Handling**
+   - Are API calls and async logic handled safely?
+   - Are loading, error, and success states properly reflected in the UI?
+
+8. **Performance**
+   - Is unnecessary re-rendering avoided?
+   - Are hooks like useMemo and useCallback used where needed?
+
+## Additional Notes
+
+- All review comments should be clear, actionable, and written in Korean.
+- If tests are missing, please request them via comments. -->
