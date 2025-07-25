@@ -3,9 +3,11 @@ export interface Signup {
   username: string;
   password: string;
   confirmPassword: string;
+  location: Location;
 }
 
 export interface Location {
-  longitude: number | null;
-  latitude: number | null;
+  cityName: string;
+  longitude: number;
+  latitude: number;
 }

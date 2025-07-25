@@ -7,7 +7,7 @@ interface InputBoxProps {
   inputType: string;
   placeholder: string;
   formData: Partial<Signup>;
-  setFormData: React.Dispatch<React.SetStateAction<Partial<Signup>>>;
+  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
 }
 
 export default function InputBox({
@@ -18,7 +18,7 @@ export default function InputBox({
   formData,
   setFormData,
 }: InputBoxProps) {
-  const onChange = (value: string) => {
+  const onChangeHandler = (value: string) => {
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -39,8 +39,8 @@ export default function InputBox({
         type={inputType}
         placeholder={placeholder}
         className="mt-2 block box-white w-full sm text-sm"
-        value={formData[id] ?? ''}
-        onChange={(e) => onChange(e.target.value)}
+        value={formData[id] as string}
+        onChange={(e) => onChangeHandler(e.target.value)}
       />
     </div>
   );

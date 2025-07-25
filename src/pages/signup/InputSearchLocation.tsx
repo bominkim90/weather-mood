@@ -1,20 +1,18 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import useSearchLocation from '@/hooks/useSearchLocation';
-import { Location } from '@/model/signup';
+import { Location, Signup } from '@/model/signup';
 import { useEffect, useRef, useState } from 'react';
 
 interface SearchLocationProps {
-  location: {
-    longitude: number | null;
-    latitude: number | null;
-  };
-  setLocation: React.Dispatch<React.SetStateAction<Location>>;
+  formData: Signup;
+  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
 }
 
 export default function InputSearchLocation({
-  location,
-  setLocation,
+  formData,
+  setFormData,
 }: SearchLocationProps) {
+  // cityName 리스트를 선택할때만 => formData에 저장하기위해 => 타이핑으로 받는 state 추가
   const [locationName, setLocationName] = useState<string>('');
   const debouncedLocationName = useDebounce(locationName, 500); // 500ms 동안 입력 없으면 값 고정
   const [showDropdown, setShowDropdown] = useState(false);
@@ -27,20 +25,21 @@ export default function InputSearchLocation({
     setShowDropdown(true);
   };
 
-  const handleSelect = (item: any) => {
-    setLocation({
-      longitude: item.lon,
-      latitude: item.lat,
+  const handleSelectCity = (item: any) => {
+    // api의 데이터가 복잡해서 any로 처리
+    setFormData({
+      ...formData,
+      location: {
+        cityName: item.name,
+        longitude: item.lon,
+        latitude: item.lat,
+      },
     });
     setLocationName(item.name);
     setShowDropdown(false);
     inputRef.current?.blur(); // input blur로 자동완성 닫힘
   };
 
-  useEffect(() => {
-    console.log('locationName : ', locationName);
-    console.log('location : ', location);
-  }, [locationName, location]);
   return (
     <div className="input-box relative">
       <label htmlFor="location" className="text-sm text-text-secondary">
@@ -51,7 +50,7 @@ export default function InputSearchLocation({
         ref={inputRef}
         type="text"
         autoComplete="off"
-        placeholder="Please enter location in English (ex: Korea, Seoul, Busan)"
+        placeholder="Enter your location (ex: Korea, Seoul, Busan)"
         className="mt-2 block box-white w-full sm text-sm rounded-full px-4 py-2"
         value={locationName}
         onFocus={() => setShowDropdown(true)}
@@ -66,7 +65,7 @@ export default function InputSearchLocation({
             <li
               key={index}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition"
-              onMouseDown={() => handleSelect(item)}
+              onMouseDown={() => handleSelectCity(item)}
             >
               {item.name} {item.country} {item.state && `(${item.state})`}
             </li>
