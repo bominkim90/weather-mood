@@ -9,26 +9,42 @@ const axiosInstance = axios.create({
   withCredentials: true, // 이 설정 있어야 => 쿠키가 자동으로 포함됨
 });
 
-// 공통 요청 헤더 (토큰 자동 추가)
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem('accessToken');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+// 공통 request 헤더 (토큰 자동 추가)
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // 요청을 보내기 전에 수행할 작업 (요청 성공 시)
+    const token = localStorage.getItem('asstoken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    // 요청을 보내기 전에 에러가 발생했을 때 처리 (요청 에러 시)
+    Promise.reject(error);
+  }
+);
+/*  
+  첫 번째 인수 함수의 config : axios가 실제 HTTP 요청을 보낼 때 사용하는 설정 객체
+  구조: url, method, headers, params, data 등 모든 요청 설정 정보가 포함됨
+  {
+    url: "/api/somewhere",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer xxxxxxx"
+    },
+    params: { ... },
+    data: { ... }
+  }
+*/
 
-// 공통 응답 처리 (토큰 만료, 에러 메시지 처리)
+// 공통 response 처리 (토큰 만료, 에러 메시지 처리)
 axiosInstance.interceptors.response.use(
-  // 정상 응답 시 실행되는 콜백
-  // 받은 응답을 그대로 반환 : 여기서 응답을 가공해서 반환하거나 할 수 있음
+  // 정상 응답 시 실행되는 콜백 => 받은 응답을 그대로 반환 : 여기서 응답을 가공해서 반환하거나 할 수 있음
   (response) => response,
 
-  // 에러 발생 시 실행되는 콜백
-  // HTTP 에러 또는 네트워크 에러 등 모든 axios 에러 처리
+  // 에러 발생 시 실행되는 콜백 => HTTP 에러 또는 네트워크 에러 등 모든 axios 에러 처리
   (error) => {
     if (error.response) {
       // HTTP에러가 아닌, 네트워크 에러라면 error.response가 없을 수 있음
