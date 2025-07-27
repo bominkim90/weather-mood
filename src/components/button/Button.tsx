@@ -25,13 +25,7 @@ export default function Button({
   return (
     <button
       onClick={onClick}
-      className={
-        'rounded-[8px] text-sm flex items-center justify-center h-[45px] px-6' +
-        ' ' +
-        addClass +
-        ' ' +
-        buttonTheme
-      }
+      className={`rounded-[8px] text-sm flex items-center justify-center h-[45px] px-6 ${addClass} ${buttonTheme}`}
       disabled={disabled}
       type={type}
     >

@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InputBox from '@/components/form/InputBox';
 import Button from '@/components/button/Button';
+import InputBox from '@/components/form/InputBox';
 import { Location, Signup } from '@/model/signup';
 import InputSearchLocation from './InputSearchLocation';
 import useSignup from '@/hooks/useSignup';
-
-interface CustomFormData {
-  [key: string]: string | object;
-}
+import ErrorMsg from '@/components/error/ErrorMsg';
 
 export default function SignupMain() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<CustomFormData>({
+  const [formData, setFormData] = useState<Signup>({
     email: '',
     username: '',
     password: '',
@@ -44,25 +41,19 @@ export default function SignupMain() {
   // 폼 유효성 검사
   const validateForm = (): boolean => {
     // 빈 필드 체크
-    for (const [key, value] of Object.entries(formData)) {
-      if (key === 'location') {
-        const locationValue = value as Location;
-        if (!locationValue.cityName.trim()) {
-          setValidationError('Please select a location.');
-          return false;
-        }
-      } else {
-        if (typeof value === 'string' && !value.trim()) {
-          setValidationError('Please fill in all fields.');
-          return false;
-        }
-      }
+    if (
+      !formData.email.trim() ||
+      !formData.username.trim() ||
+      !formData.password.trim() ||
+      !formData.confirmPassword.trim() ||
+      !formData.location.cityName.trim()
+    ) {
+      setValidationError('Please fill in all fields.');
+      return false;
     }
 
     // 비밀번호 확인
-    if (
-      (formData.password as string) !== (formData.confirmPassword as string)
-    ) {
+    if (formData.password !== formData.confirmPassword) {
       setValidationError('Passwords do not match.');
       return false;
     }
@@ -78,15 +69,7 @@ export default function SignupMain() {
       return;
     }
 
-    const signupData: Signup = {
-      email: formData.email as string,
-      username: formData.username as string,
-      password: formData.password as string,
-      confirmPassword: formData.confirmPassword as string,
-      location: formData.location as Location,
-    };
-
-    signupMutate(signupData, {
+    signupMutate(formData, {
       onSuccess: () => {
         navigate('/login');
       },
@@ -95,6 +78,14 @@ export default function SignupMain() {
       },
     });
   };
+
+  // InputBox와 호환을 위한 타입 변환
+  const formDataForInputBox = formData as unknown as {
+    [key: string]: string | object;
+  };
+  const setFormDataForInputBox = setFormData as unknown as React.Dispatch<
+    React.SetStateAction<{ [key: string]: string | object }>
+  >;
 
   return (
     <div>
@@ -105,8 +96,8 @@ export default function SignupMain() {
             title="Email"
             inputType="text"
             placeholder="Enter your email"
-            formData={formData}
-            setFormData={setFormData}
+            formData={formDataForInputBox}
+            setFormData={setFormDataForInputBox}
             clearErrors={clearErrors}
           />
 
@@ -115,8 +106,8 @@ export default function SignupMain() {
             title="Username"
             inputType="text"
             placeholder="Choose a username"
-            formData={formData}
-            setFormData={setFormData}
+            formData={formDataForInputBox}
+            setFormData={setFormDataForInputBox}
             clearErrors={clearErrors}
           />
 
@@ -125,8 +116,8 @@ export default function SignupMain() {
             title="Password"
             inputType="password"
             placeholder="Create a password"
-            formData={formData}
-            setFormData={setFormData}
+            formData={formDataForInputBox}
+            setFormData={setFormDataForInputBox}
             clearErrors={clearErrors}
           />
 
@@ -135,8 +126,8 @@ export default function SignupMain() {
             title="Confirm Password"
             inputType="password"
             placeholder="Confirm your Password"
-            formData={formData}
-            setFormData={setFormData}
+            formData={formDataForInputBox}
+            setFormData={setFormDataForInputBox}
             clearErrors={clearErrors}
           />
 
@@ -157,10 +148,10 @@ export default function SignupMain() {
 
         {/* 에러 메시지 표시 */}
         {isError && error && (
-          <div className="text-red-primary mt-2">{error.message}</div>
+          <ErrorMsg errorMessage={error.message} addClass="mt-2" />
         )}
         {validationError && (
-          <div className="text-red-primary mt-2">{validationError}</div>
+          <ErrorMsg errorMessage={validationError} addClass="mt-2" />
         )}
       </form>
     </div>
