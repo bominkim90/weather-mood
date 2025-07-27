@@ -1,15 +1,11 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import useSearchLocation from '@/hooks/useSearchLocation';
-import { Location } from '@/model/signup';
+import { Location, Signup } from '@/model/signup';
 import { useRef, useState } from 'react';
 
-interface CustomFormData {
-  [key: string]: string | object;
-}
-
 interface SearchLocationProps {
-  formData: CustomFormData;
-  setFormData: React.Dispatch<React.SetStateAction<CustomFormData>>;
+  formData: Signup;
+  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
   clearErrors: () => void;
 }
 
@@ -32,6 +28,7 @@ export default function InputSearchLocation({
     clearErrors(); // 타이핑할 때 에러 초기화
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectCity = (item: any) => {
     // api의 데이터가 복잡해서 any로 처리
     const locationData: Location = {
@@ -70,6 +67,7 @@ export default function InputSearchLocation({
       {/* 자동완성 드롭다운 */}
       {showDropdown && locationName && data && data.length > 0 && (
         <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl shadow-md mt-1 max-h-52 overflow-auto">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {data.map((item: any, index: number) => (
             <li
               key={index}

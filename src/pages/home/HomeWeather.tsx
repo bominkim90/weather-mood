@@ -1,28 +1,27 @@
 import useTodayMood from '@/hooks/useTodayMood';
+import getTodayDate from '@/util/getTodayDate';
 
 export default function HomeWeather() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
-  const date = `${year}-${month}-${day}`;
+  const {
+    data: todayMoodData,
+    isPending,
+    isError,
+    error,
+  } = useTodayMood(getTodayDate());
 
-  // const { data: todayMoodData, isPending, isError, error } = useTodayMood(date);
-  // console.log('todayMoodData : ', todayMoodData);
-
-  // if (isPending) return <div>Loading...</div>;
-  // if (isError) return <div>Error: {error.message}</div>;
+  if (isPending) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error?.message}</div>;
 
   // 가상 데이터
-  const todayMoodData = {
-    location: {
-      cityName: 'Seoul',
-    },
-    weather: {
-      temperature: 30,
-      description: 'Sunny',
-    },
-  };
+  // const todayMoodData = {
+  //   location: {
+  //     cityName: 'Seoul',
+  //   },
+  //   weather: {
+  //     temperature: 30,
+  //     description: 'Sunny',
+  //   },
+  // };
   const weatherIcon =
     `/icons/weather/${todayMoodData?.weather.description}.svg`.toLowerCase();
 
@@ -32,7 +31,7 @@ export default function HomeWeather() {
         <strong className="text-lg font-bold">
           {todayMoodData?.location.cityName}
         </strong>
-        <span className="text-sm text-text-gray">{date}</span>
+        <span className="text-sm text-text-gray">{getTodayDate()}</span>
       </div>
       <div className="mt-4 flex justify-between items-center">
         <div className="flex gap-2 items-center">
