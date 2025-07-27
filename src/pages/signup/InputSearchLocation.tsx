@@ -1,16 +1,22 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import useSearchLocation from '@/hooks/useSearchLocation';
-import { Location, Signup } from '@/model/signup';
-import { useEffect, useRef, useState } from 'react';
+import { Location } from '@/model/signup';
+import { useRef, useState } from 'react';
+
+interface CustomFormData {
+  [key: string]: string | object;
+}
 
 interface SearchLocationProps {
-  formData: Signup;
-  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
+  formData: CustomFormData;
+  setFormData: React.Dispatch<React.SetStateAction<CustomFormData>>;
+  clearErrors: () => void;
 }
 
 export default function InputSearchLocation({
   formData,
   setFormData,
+  clearErrors,
 }: SearchLocationProps) {
   // cityName 리스트를 선택할때만 => formData에 저장하기위해 => 타이핑으로 받는 state 추가
   const [locationName, setLocationName] = useState<string>('');
@@ -23,17 +29,20 @@ export default function InputSearchLocation({
   const onChange = (value: string) => {
     setLocationName(value);
     setShowDropdown(true);
+    clearErrors(); // 타이핑할 때 에러 초기화
   };
 
   const handleSelectCity = (item: any) => {
     // api의 데이터가 복잡해서 any로 처리
+    const locationData: Location = {
+      cityName: item.name,
+      longitude: item.lon,
+      latitude: item.lat,
+    };
+
     setFormData({
       ...formData,
-      location: {
-        cityName: item.name,
-        longitude: item.lon,
-        latitude: item.lat,
-      },
+      location: locationData,
     });
     setLocationName(item.name);
     setShowDropdown(false);

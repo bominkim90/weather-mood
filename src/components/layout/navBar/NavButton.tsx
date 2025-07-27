@@ -1,25 +1,25 @@
 import { NavLink } from 'react-router-dom';
 
 interface NavButtonProps {
-  text: 'Home' | 'Record' | 'Signup';
+  text: 'Home' | 'Records' | 'Profile';
 }
 
 export default function NavButton({ text }: NavButtonProps) {
   const navConfig = {
     Home: {
       path: '/',
-      icon: '/icons/home.svg',
+      icon: '/icons/home',
       label: 'Home',
     },
-    Record: {
+    Records: {
       path: '/records',
-      icon: '/icons/record.svg',
-      label: 'Record',
+      icon: '/icons/record',
+      label: 'Records',
     },
-    Signup: {
-      path: '/signup',
-      icon: '/icons/profile.svg',
-      label: 'Signup',
+    Profile: {
+      path: '/profile',
+      icon: '/icons/profile',
+      label: 'Profile',
     },
   }[text];
 
@@ -28,19 +28,25 @@ export default function NavButton({ text }: NavButtonProps) {
       to={navConfig.path}
       className={`w-full h-full flex-1 flex flex-col items-center justify-center gap-1`}
     >
-      {({ isActive }) => (
-        <>
-          <div>
-            <img src={navConfig.icon} alt="" className={'w-6 h-6'} />
-          </div>
-          <span className="sr-only">{navConfig.label} 페이지로 이동</span>
-          <span
-            className={`text-xs ${isActive ? 'text-main-pink' : 'text-text-gray'}`}
-          >
-            {navConfig.label}
-          </span>
-        </>
-      )}
+      {({ isActive }) => {
+        const iconSrc = isActive
+          ? `${navConfig.icon}_on.svg`
+          : `${navConfig.icon}.svg`;
+
+        return (
+          <>
+            <div>
+              <img src={iconSrc} alt="" className={'w-6 h-6'} />
+            </div>
+            <span className="sr-only">{navConfig.label} 페이지로 이동</span>
+            <span
+              className={`text-xs ${isActive ? 'text-pink-primary' : 'text-text-gray'}`}
+            >
+              {navConfig.label}
+            </span>
+          </>
+        );
+      }}
     </NavLink>
   );
 }

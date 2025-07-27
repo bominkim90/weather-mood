@@ -1,139 +1,166 @@
 import { useState } from 'react';
-import InputBox from './InputBox';
+import { useNavigate } from 'react-router-dom';
+import InputBox from '@/components/form/InputBox';
+import Button from '@/components/button/Button';
 import { Location, Signup } from '@/model/signup';
 import InputSearchLocation from './InputSearchLocation';
 import useSignup from '@/hooks/useSignup';
-import { useNavigate } from 'react-router-dom';
 
-interface InputList {
-  title: string;
-  inputType: string;
-  id: keyof Signup;
-  placeholder: string;
-  isCustom?: boolean;
+interface CustomFormData {
+  [key: string]: string | object;
 }
-
-const inputList: InputList[] = [
-  {
-    title: 'Email',
-    inputType: 'text',
-    id: 'email',
-    placeholder: 'Enter your email',
-  },
-  {
-    title: 'Username',
-    inputType: 'text',
-    id: 'username',
-    placeholder: 'Choose a username',
-  },
-  {
-    title: 'Password',
-    inputType: 'password',
-    id: 'password',
-    placeholder: 'Create a password',
-  },
-  {
-    title: 'Confirm Password',
-    inputType: 'password',
-    id: 'confirmPassword',
-    placeholder: 'Confirm your Password',
-  },
-  {
-    title: 'Location',
-    inputType: 'text',
-    id: 'location',
-    placeholder: 'Enter your location',
-    isCustom: true,
-  },
-];
 
 export default function SignupMain() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<Signup>({
-    confirmPassword: '',
+  const [formData, setFormData] = useState<CustomFormData>({
     email: '',
-    password: '',
     username: '',
+    password: '',
+    confirmPassword: '',
     location: {
       longitude: 0,
       latitude: 0,
       cityName: '',
-    },
+    } as Location,
   });
-  const { mutate, isError, error } = useSignup();
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
-  // 회원가입 시도
-  const onSubmit = () => {
-    setIsEmpty(false);
+  const {
+    mutate: signupMutate,
+    isError,
+    error,
+    reset,
+    isPending,
+  } = useSignup();
 
+  // 에러 초기화 함수
+  const clearErrors = () => {
+    setValidationError(null);
+    if (isError) {
+      reset();
+    }
+  };
+
+  // 폼 유효성 검사
+  const validateForm = (): boolean => {
+    // 빈 필드 체크
     for (const [key, value] of Object.entries(formData)) {
       if (key === 'location') {
         const locationValue = value as Location;
         if (!locationValue.cityName.trim()) {
-          setIsEmpty(true);
-          return;
+          setValidationError('Please select a location.');
+          return false;
         }
       } else {
         if (typeof value === 'string' && !value.trim()) {
-          setIsEmpty(true);
-          return;
+          setValidationError('Please fill in all fields.');
+          return false;
         }
       }
     }
 
-    mutate(formData, {
+    // 비밀번호 확인
+    if (
+      (formData.password as string) !== (formData.confirmPassword as string)
+    ) {
+      setValidationError('Passwords do not match.');
+      return false;
+    }
+
+    return true;
+  };
+
+  // 폼 제출 핸들러
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const signupData: Signup = {
+      email: formData.email as string,
+      username: formData.username as string,
+      password: formData.password as string,
+      confirmPassword: formData.confirmPassword as string,
+      location: formData.location as Location,
+    };
+
+    signupMutate(signupData, {
       onSuccess: () => {
         navigate('/login');
       },
-      onError: (err) => {
-        console.error('회원가입 실패:', err);
+      onError: (error: Error) => {
+        console.log(error);
       },
     });
   };
 
   return (
     <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
-        <div className="input-list space-y-6">
-          {inputList.map((item) => {
-            if (item.isCustom && item.id === 'location') {
-              return (
-                <InputSearchLocation
-                  key={item.id}
-                  formData={formData}
-                  setFormData={setFormData}
-                />
-              );
-            }
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          <InputBox
+            id="email"
+            title="Email"
+            inputType="text"
+            placeholder="Enter your email"
+            formData={formData}
+            setFormData={setFormData}
+            clearErrors={clearErrors}
+          />
 
-            return (
-              <InputBox
-                key={item.id}
-                title={item.title}
-                inputType={item.inputType}
-                id={item.id as keyof Signup}
-                placeholder={item.placeholder}
-                formData={formData}
-                setFormData={setFormData}
-              />
-            );
-          })}
+          <InputBox
+            id="username"
+            title="Username"
+            inputType="text"
+            placeholder="Choose a username"
+            formData={formData}
+            setFormData={setFormData}
+            clearErrors={clearErrors}
+          />
+
+          <InputBox
+            id="password"
+            title="Password"
+            inputType="password"
+            placeholder="Create a password"
+            formData={formData}
+            setFormData={setFormData}
+            clearErrors={clearErrors}
+          />
+
+          <InputBox
+            id="confirmPassword"
+            title="Confirm Password"
+            inputType="password"
+            placeholder="Confirm your Password"
+            formData={formData}
+            setFormData={setFormData}
+            clearErrors={clearErrors}
+          />
+
+          <InputSearchLocation
+            formData={formData}
+            setFormData={setFormData}
+            clearErrors={clearErrors}
+          />
         </div>
 
-        <button
+        <Button
+          theme="POSITIVE"
           type="submit"
-          className="mt-[32px] flex w-full h-[45px] justify-center items-center rounded-[20px] bg-main-pink text-white text-sm"
-        >
-          Sign Up
-        </button>
-        {(isError || isEmpty) && (
-          <p className="text-red-500 mt-3">{error?.message}</p>
+          addClass="mt-6 w-full rounded-full"
+          title="Sign Up"
+          disabled={isPending}
+        />
+
+        {/* 에러 메시지 표시 */}
+        {isError && error && (
+          <div className="text-red-primary mt-2">{error.message}</div>
+        )}
+        {validationError && (
+          <div className="text-red-primary mt-2">{validationError}</div>
         )}
       </form>
     </div>
