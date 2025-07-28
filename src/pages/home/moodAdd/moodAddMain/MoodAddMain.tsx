@@ -2,7 +2,7 @@ import Button from '@/components/button/Button';
 import MoodSelect from './MoodSelect';
 import MoodMemo from './MoodMemo';
 import { useState } from 'react';
-import useAddMood from '@/hooks/useAddMood';
+import useAddMood from '@/hooks/useAddMoodQuery';
 import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
 

@@ -1,4 +1,4 @@
-import useTodayMood from '@/hooks/useTodayMood';
+import useTodayMood from '@/hooks/useTodayMoodQuery';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomeFeeling() {

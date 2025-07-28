@@ -1,4 +1,4 @@
-import useTodayMood from '@/hooks/useTodayMood';
+import useTodayMood from '@/hooks/useTodayMoodQuery';
 import getTodayDate from '@/util/getTodayDate';
 
 export default function HomeWeather() {
