@@ -4,7 +4,7 @@ import Button from '@/components/button/Button';
 import InputBox from '@/components/form/InputBox';
 import { Location, Signup } from '@/model/signup';
 import InputSearchLocation from './InputSearchLocation';
-import useSignup from '@/hooks/useSignup';
+import useSignup from '@/hooks/useSignupQuery';
 import ErrorMsg from '@/components/error/ErrorMsg';
 
 export default function SignupMain() {

@@ -1,5 +1,5 @@
 import Button from '@/components/button/Button';
-import useProfile from '@/hooks/useProfile';
+import useProfile from '@/hooks/useProfileQuery';
 import { useNavigate } from 'react-router-dom';
 import ErrorMsg from '@/components/error/ErrorMsg';
 

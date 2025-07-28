@@ -1,5 +1,5 @@
 import { useDebounce } from '@/hooks/useDebounce';
-import useSearchLocation from '@/hooks/useSearchLocation';
+import useSearchLocation from '@/hooks/useSearchLocationQuery';
 import { Location, Signup } from '@/model/signup';
 import { useRef, useState } from 'react';
 
