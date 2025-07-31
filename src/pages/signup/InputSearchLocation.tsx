@@ -1,6 +1,6 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import useSearchLocation from '@/hooks/useSearchLocationQuery';
-import { Location, Signup } from '@/model/signup';
+import { Signup } from '@/model/signup';
 import { useRef, useState } from 'react';
 
 interface SearchLocationProps {
@@ -28,18 +28,10 @@ export default function InputSearchLocation({
     clearErrors(); // 타이핑할 때 에러 초기화
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSelectCity = (item: any) => {
-    // api의 데이터가 복잡해서 any로 처리
-    const locationData: Location = {
-      cityName: item.name,
-      longitude: item.lon,
-      latitude: item.lat,
-    };
-
+  const handleSelectCity = (item: { name: string }) => {
     setFormData({
       ...formData,
-      location: locationData,
+      cityName: item.name,
     });
     setLocationName(item.name);
     setShowDropdown(false);
@@ -67,16 +59,18 @@ export default function InputSearchLocation({
       {/* 자동완성 드롭다운 */}
       {showDropdown && locationName && data && data.length > 0 && (
         <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl shadow-md mt-1 max-h-52 overflow-auto">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {data.map((item: any, index: number) => (
-            <li
-              key={index}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition"
-              onMouseDown={() => handleSelectCity(item)}
-            >
-              {item.name} {item.country} {item.state && `(${item.state})`}
-            </li>
-          ))}
+          {Array.isArray(data) &&
+            data.map(
+              (item: { name: string; country: string }, index: number) => (
+                <li
+                  key={index}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition"
+                  onMouseDown={() => handleSelectCity(item)}
+                >
+                  {item.name} - {item.country}
+                </li>
+              )
+            )}
         </ul>
       )}
 

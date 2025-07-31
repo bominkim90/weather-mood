@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button/Button';
 import InputBox from '@/components/form/InputBox';
-import { Location, Signup } from '@/model/signup';
+import { Signup } from '@/model/signup';
 import InputSearchLocation from './InputSearchLocation';
 import useSignup from '@/hooks/useSignupQuery';
 import ErrorMsg from '@/components/error/ErrorMsg';
@@ -11,14 +11,10 @@ export default function SignupMain() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<Signup>({
     email: '',
-    username: '',
+    nickName: '',
     password: '',
-    confirmPassword: '',
-    location: {
-      longitude: 0,
-      latitude: 0,
-      cityName: '',
-    } as Location,
+    confirm_password: '',
+    cityName: '',
   });
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -43,17 +39,18 @@ export default function SignupMain() {
     // 빈 필드 체크
     if (
       !formData.email.trim() ||
-      !formData.username.trim() ||
+      !formData.nickName.trim() ||
       !formData.password.trim() ||
-      !formData.confirmPassword.trim() ||
-      !formData.location.cityName.trim()
+      !formData.confirm_password.trim() ||
+      !formData.cityName.trim()
     ) {
+      console.log('formData : ', formData);
       setValidationError('Please fill in all fields.');
       return false;
     }
 
     // 비밀번호 확인
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirm_password) {
       setValidationError('Passwords do not match.');
       return false;
     }
@@ -79,14 +76,6 @@ export default function SignupMain() {
     });
   };
 
-  // InputBox와 호환을 위한 타입 변환
-  const formDataForInputBox = formData as unknown as {
-    [key: string]: string | object;
-  };
-  const setFormDataForInputBox = setFormData as unknown as React.Dispatch<
-    React.SetStateAction<{ [key: string]: string | object }>
-  >;
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -96,18 +85,18 @@ export default function SignupMain() {
             title="Email"
             inputType="text"
             placeholder="Enter your email"
-            formData={formDataForInputBox}
-            setFormData={setFormDataForInputBox}
+            formData={formData}
+            setFormData={setFormData}
             clearErrors={clearErrors}
           />
 
           <InputBox
-            id="username"
-            title="Username"
+            id="nickName"
+            title="Nickname"
             inputType="text"
-            placeholder="Choose a username"
-            formData={formDataForInputBox}
-            setFormData={setFormDataForInputBox}
+            placeholder="Choose a nickname"
+            formData={formData}
+            setFormData={setFormData}
             clearErrors={clearErrors}
           />
 
@@ -116,18 +105,18 @@ export default function SignupMain() {
             title="Password"
             inputType="password"
             placeholder="Create a password"
-            formData={formDataForInputBox}
-            setFormData={setFormDataForInputBox}
+            formData={formData}
+            setFormData={setFormData}
             clearErrors={clearErrors}
           />
 
           <InputBox
-            id="confirmPassword"
+            id="confirm_password"
             title="Confirm Password"
             inputType="password"
-            placeholder="Confirm your Password"
-            formData={formDataForInputBox}
-            setFormData={setFormDataForInputBox}
+            placeholder="Confirm your password"
+            formData={formData}
+            setFormData={setFormData}
             clearErrors={clearErrors}
           />
 

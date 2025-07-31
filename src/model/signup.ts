@@ -1,13 +1,7 @@
 export interface Signup {
   email: string;
-  username: string;
+  nickName: string;
   password: string;
-  confirmPassword: string;
-  location: Location;
-}
-
-export interface Location {
+  confirm_password: string;
   cityName: string;
-  longitude: number;
-  latitude: number;
 }

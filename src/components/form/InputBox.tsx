@@ -1,14 +1,12 @@
-interface CustomFormData {
-  [key: string]: string | object;
-}
+import { Signup } from '@/model/signup';
 
 interface InputBoxProps {
   id: string;
   title: string;
   inputType: string;
   placeholder: string;
-  formData: CustomFormData;
-  setFormData: React.Dispatch<React.SetStateAction<CustomFormData>>;
+  formData: Signup;
+  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
   clearErrors: () => void;
 }
 
@@ -36,7 +34,7 @@ export default function InputBox({
         placeholder={placeholder}
         className="mt-2 block box-white w-full sm text-sm"
         onChange={(e) => onChangeHandler(e.target.value)}
-        value={formData[id] as string}
+        value={formData[id as keyof Signup]}
       />
     </div>
   );
