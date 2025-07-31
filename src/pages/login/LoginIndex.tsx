@@ -24,14 +24,7 @@ export default function LoginIndex() {
   });
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const {
-    mutate: loginMutate,
-    data: loginResult,
-    isError,
-    error,
-    reset,
-    isPending,
-  } = useLogin();
+  const { mutate: loginMutate, isError, error, reset, isPending } = useLogin();
 
   // 에러 초기화 함수
   const clearErrors = () => {
@@ -64,10 +57,10 @@ export default function LoginIndex() {
     };
 
     loginMutate(loginData, {
-      onSuccess: () => {
-        console.log(loginResult);
+      onSuccess: (loginResult) => {
+        console.log('loginResult : ', loginResult);
         // 백엔드에서 받은 헤더 Authorization 토큰 -> localStorage에 저장
-        localStorage.setItem('asstoken', loginResult?.headers.authorization);
+        localStorage.setItem('accessToken', loginResult.accessToken);
         navigate('/');
       },
       onError: (error: Error) => {

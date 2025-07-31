@@ -12,24 +12,11 @@ export default function HomeWeather() {
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
 
-  // 가상 데이터
-  // const todayMoodData = {
-  //   location: {
-  //     cityName: 'Seoul',
-  //   },
-  //   weather: {
-  //     temperature: 30,
-  //     description: 'Sunny',
-  //   },
-  // };
-  const weatherIcon =
-    `/icons/weather/${todayMoodData?.weather.description}.svg`.toLowerCase();
-
   return (
     <div className="HomeWeather box-white lg">
       <div className="flex justify-between items-center">
         <strong className="text-lg font-bold">
-          {todayMoodData?.location.cityName}
+          {todayMoodData?.location.location}
         </strong>
         <span className="text-sm text-text-gray">{getTodayDate()}</span>
       </div>
@@ -45,8 +32,8 @@ export default function HomeWeather() {
         <div>
           <img
             className="block w-[25px] h-[24px]"
-            src={weatherIcon}
-            alt={'날씨 아이콘'}
+            src={todayMoodData?.weather.icon}
+            alt={todayMoodData?.weather.description}
           />
         </div>
       </div>

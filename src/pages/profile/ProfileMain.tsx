@@ -10,14 +10,12 @@ export default function ProfileMain() {
   if (isPending) return <div>Loading...</div>;
   if (isError) return <ErrorMsg errorMessage={error.message} />;
 
-  // 가상 데이터
-  // const profileData = {
-  //   name: 'John Doe',
-  //   email: 'john.doe@example.com',
-  //   location: {
-  //     cityName: 'Seoul',
-  //   },
-  // };
+  console.log('profileData : ', profileData);
+
+  const logoutHandler = () => {
+    localStorage.removeItem('accessToken');
+    navigate('/login');
+  };
 
   return (
     <div>
@@ -31,7 +29,7 @@ export default function ProfileMain() {
         </div>
         <div className="flex flex-col items-center gap-1 mt-4 text-sm text-text-gray">
           <strong className="text-text-default text-xl">
-            {profileData?.name}
+            {profileData?.nickName}
           </strong>
           <span className="text-text-gray">{profileData?.email}</span>
           <span className="text-text-gray">
@@ -40,7 +38,7 @@ export default function ProfileMain() {
               src="/icons/location.svg"
               alt="location"
             />
-            {profileData?.location.cityName}
+            {profileData?.cityName}
           </span>
         </div>
         <Button
@@ -52,7 +50,12 @@ export default function ProfileMain() {
           }}
         />
       </div>
-      <Button theme="RED" title="Logout" addClass="mt-4 w-full" />
+      <Button
+        theme="RED"
+        title="Logout"
+        addClass="mt-4 w-full"
+        onClick={logoutHandler}
+      />
     </div>
   );
 }

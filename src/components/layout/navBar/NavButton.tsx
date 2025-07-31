@@ -13,7 +13,7 @@ export default function NavButton({ text }: NavButtonProps) {
     },
     Records: {
       path: '/records',
-      icon: '/icons/record',
+      icon: '/icons/records',
       label: 'Records',
     },
     Profile: {
