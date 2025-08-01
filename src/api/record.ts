@@ -1,8 +1,8 @@
 import axiosInstance from '@/lib/axios';
 
-export default async function searchLocation(cityName: string) {
+export async function getRecords(start: string, end: string) {
   const response = await axiosInstance.get(
-    `/api/v1/weather/search?q=${cityName}`
+    `/api/v1/record?start=${start}&end=${end}`
   );
   return response.data;
 }

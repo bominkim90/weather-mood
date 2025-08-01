@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/home/HomeIndex';
-import Records from '@/pages/records/Index';
+import RecordsIndex from '@/pages/records/RecordsIndex';
 import Layout from '@/components/layout/Layout';
 import NotFound from '@/components/notFound/NotFound';
 import ProfileIndex from '@/pages/profile/ProfileIndex';
@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'records',
-        element: <Records />,
+        element: <RecordsIndex />,
       },
       {
         path: 'profile',

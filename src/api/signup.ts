@@ -3,17 +3,17 @@ import { Signup } from '@/model/signup';
 
 export async function postSignup({
   email,
-  username,
+  nickName,
   password,
-  confirmPassword,
-  location,
+  confirm_password,
+  cityName,
 }: Signup) {
   const response = await axiosInstance.post('api/v1/auth/signup', {
     email,
-    username,
+    nickName,
     password,
-    confirmPassword,
-    location,
+    confirm_password,
+    cityName,
   });
   return response.data;
 }
