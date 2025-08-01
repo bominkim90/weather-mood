@@ -7,6 +7,7 @@ import {
 import 'react-day-picker/style.css';
 import { DateRange } from 'react-day-picker';
 import './Calendar.css';
+import formatDate from '@/util/formatDate';
 
 export default function Calendar() {
   const { dateRange, setDateRange } = useDateRangeStore();
@@ -33,6 +34,14 @@ export default function Calendar() {
         mode="range"
         selected={dateRange}
         onSelect={handleSelect}
+        // captionLayout="dropdown"
+        footer={
+          <div className="text-xs text-text-gray">
+            {dateRange.from && dateRange.to
+              ? `${formatDate(dateRange.from)} ~ ${formatDate(dateRange.to)}`
+              : ''}
+          </div>
+        }
         classNames={{
           root: `${defaultClassNames.root} w-full text-xs`,
           month_caption: `${defaultClassNames.month_caption} mb-2`,

@@ -5,11 +5,11 @@ import Summary from './Summary';
 import Calendar from './Calendar';
 import Entries from './Entries';
 
-export default function Records() {
+export default function RecordsIndex() {
   return (
     <>
       <Header left={<BackButton />} title="Records" />
-      <div>
+      <div className="space-y-6">
         <Chart />
         <Summary />
         <Calendar />

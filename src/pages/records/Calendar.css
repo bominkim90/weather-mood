@@ -1,3 +1,7 @@
+.rdp-root {
+  --rdp-accent-color: var(--color-pink-primary);
+}
+
 .rdp-months {
   width: 100%;
   display: flex;
