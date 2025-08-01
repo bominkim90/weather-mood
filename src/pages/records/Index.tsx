@@ -1,13 +1,20 @@
-import { Link } from 'react-router-dom';
+import BackButton from '@/components/button/BackButton';
+import Header from '@/components/layout/Header';
+import Chart from './Chart';
+import Summary from './Summary';
+import Calendar from './Calendar';
+import Entries from './Entries';
 
 export default function Records() {
   return (
-    <div>
-      <h1>Records</h1>
-      <p>기록 페이지입니다.</p>
-      <nav>
-        <Link to="/">홈으로 돌아가기</Link>
-      </nav>
-    </div>
+    <>
+      <Header left={<BackButton />} title="Records" />
+      <div>
+        <Chart />
+        <Summary />
+        <Calendar />
+        <Entries />
+      </div>
+    </>
   );
-} 
+}

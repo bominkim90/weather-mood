@@ -1,0 +1,64 @@
+.rdp-months {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.rdp-month_grid {
+  width: 100%;
+}
+
+.rdp-day_button {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.rdp-selected,
+.rdp-range_start,
+.rdp-range_end {
+  background: transparent;
+}
+.rdp-selected .rdp-day_button {
+  width: 32px;
+  height: 32px;
+  background-color: rgba(255, 182, 193, 0.2);
+  font-size: 12px;
+  font-weight: 400;
+  border: none;
+}
+.rdp-range_start .rdp-day_button,
+.rdp-range_end .rdp-day_button {
+  background-color: var(--color-pink-primary);
+}
+
+.rdp-range_start .rdp-day_button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rdp-range_end .rdp-day_button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rdp-nav button {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  width: 32px;
+  height: 32px;
+}
+
+.rdp-nav button svg {
+  display: none;
+}
+
+.rdp-button_previous {
+  background-image: url('/icons/arrow_gray_prev.svg');
+}
+
+.rdp-button_next {
+  background-image: url('/icons/arrow_gray_next.svg');
+}
