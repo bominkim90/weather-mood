@@ -12,3 +12,12 @@ export const emotions: Emotion[] = [
   { id: 5, name: 'Happy', icon: '/icons/emotion/emotion_5.svg' },
   { id: 6, name: 'Excited', icon: '/icons/emotion/emotion_6.svg' },
 ];
+
+export const emotionLabels: Record<number, string> = {
+  1: 'Sad',
+  2: 'Angry',
+  3: 'So-so',
+  4: 'Smile',
+  5: 'Happy',
+  6: 'Excited',
+};

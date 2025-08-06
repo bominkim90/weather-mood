@@ -45,29 +45,22 @@ export default function Entries() {
     },
     list: [
       {
-        emotionId: 1,
-        emotionName: 'calm',
-        weatherIcon: 'sunny',
-        weatherName: 'sunny',
-        location: 'Seoul, Korea',
+        main: 'sunny',
+        cityName: 'Seoul, Korea',
+        feelings: {
+          name: 'calm',
+          id: 1,
+        },
         memo: 'Had a wonderful lunch with Sarah at the new cafe downtown. The weather was perfect and I felt so grateful for good friends.',
         createdAt: '2025-07-20 10:00',
       },
       {
-        emotionId: 2,
-        emotionName: 'happy',
-        weatherIcon: 'sunny',
-        weatherName: 'sunny',
-        location: 'Seoul, Korea',
-        memo: 'Had a wonderful lunch with Sarah at the new cafe downtown. The weather was perfect and I felt so grateful for good friends.',
-        createdAt: '2025-07-20 10:00',
-      },
-      {
-        emotionId: 3,
-        emotionName: 'sad',
-        weatherIcon: 'sunny',
-        weatherName: 'sunny',
-        location: 'Seoul, Korea',
+        main: 'rainy',
+        cityName: 'dokyo, japan',
+        feelings: {
+          name: 'happy',
+          id: 2,
+        },
         memo: 'Had a wonderful lunch with Sarah at the new cafe downtown. The weather was perfect and I felt so grateful for good friends.',
         createdAt: '2025-07-20 10:00',
       },
@@ -92,18 +85,18 @@ export default function Entries() {
               <div className="flex gap-3 items-center">
                 <img
                   className="w-[40px] h-[40px]"
-                  src={`/icons/emotion/${entry.emotionId}.svg`}
+                  src={`/icons/emotion/${entry.feelings.id}.svg`}
                   alt="mood"
                 />
                 <div>
-                  <p className="text-sm font-medium">{entry.emotionName}</p>
+                  <p className="text-sm font-medium">{entry.feelings.name}</p>
                   <p className="text-xs text-text-gray">{entry.createdAt}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <img
                   className="w-[24px] h-[24px]"
-                  src={`/icons/weather/${entry.weatherIcon}.svg`}
+                  src={`/icons/weather/${entry.main}.svg`}
                   alt="weather"
                 />
                 <img
