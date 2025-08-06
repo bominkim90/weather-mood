@@ -13,11 +13,16 @@ export const emotions: Emotion[] = [
   { id: 6, name: 'Excited', icon: '/icons/emotion/emotion_6.svg' },
 ];
 
-export const emotionLabels: Record<number, string> = {
-  1: 'Sad',
-  2: 'Angry',
-  3: 'So-so',
-  4: 'Smile',
-  5: 'Happy',
-  6: 'Excited',
-};
+// export const emotionLabels: Record<number, string> = {
+//   1: 'Sad',
+//   2: 'Angry',
+//   3: 'So-so',
+//   4: 'Smile',
+//   5: 'Happy',
+//   6: 'Excited',
+// };
+
+// 이렇게 하면 감정 데이터가 변경될 때 한 곳만 수정하면 됨
+export const emotionLabels: Record<number, string> = Object.fromEntries(
+  emotions.map(({ id, name }) => [id, name])
+);

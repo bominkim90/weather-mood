@@ -10,14 +10,8 @@ import {
   YAxis,
 } from 'recharts';
 import formatDate from '@/util/formatDate';
-import { emotionLabels } from '@/model/emotions';
+import { emotionLabels, emotions } from '@/model/emotions';
 import dummyRecords from './DummyRecords';
-
-type ChartData = {
-  date: string;
-  emotionId: number;
-  emotionName: string;
-};
 
 export default function Chart() {
   // const { dateRange } = useDateRangeStore();
@@ -77,8 +71,8 @@ export default function Chart() {
             padding={{ left: 10, right: 10 }} // 좌우 여백
           />
           <YAxis
-            domain={[1, 6]}
-            ticks={[1, 2, 3, 4, 5, 6]}
+            domain={[1, emotions.length]}
+            ticks={emotions.map(({ id }) => id)}
             tickFormatter={(val: number) => emotionLabels[val]}
             tick={{ fontSize: 12, fill: 'var(--color-text-gray)' }}
             tickLine={false} // 눈금 짧은 선 제거
@@ -92,7 +86,7 @@ export default function Chart() {
           <Tooltip
             formatter={(val: number) => emotionLabels[val]}
             labelFormatter={(label) => `날짜: ${label}`}
-            cursor={{ stroke: 'red', strokeWidth: 2 }}
+            cursor={{ stroke: 'var(--color-pink-primary)', strokeWidth: 2 }}
           />
           <Area
             type="monotone"
@@ -126,7 +120,17 @@ function chunkArray<T>(arr: T[], size: number): T[][] {
 }
 
 // 30개 초과 시 요약
-function summarizeData(data: ChartData[]): ChartData[] {
+function summarizeData(
+  data: {
+    date: string;
+    emotionId: number;
+    emotionName: string;
+  }[]
+): {
+  date: string;
+  emotionId: number;
+  emotionName: string;
+}[] {
   const MAX_COUNT = 30;
   if (data.length <= MAX_COUNT) return data;
 

@@ -5,10 +5,9 @@ const records: RecordsStatus = {
     Happy: 1,
     'So-so': 1,
     Sad: 1,
-    Excited: 1,
     Angry: 1,
     Smile: 1,
-    exited: 1,
+    Excited: 1,
   },
   list: [
     {
