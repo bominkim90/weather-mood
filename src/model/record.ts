@@ -6,11 +6,12 @@ export interface RecordsStatus {
 }
 
 export interface Record {
-  emotionId: number;
-  emotionName: string;
-  weatherIcon: string;
-  weatherName: string;
-  location: string;
+  main: string;
+  cityName: string;
+  feelings: {
+    name: string;
+    id: number;
+  };
   memo: string;
   createdAt: string;
 }
