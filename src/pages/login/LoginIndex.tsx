@@ -7,7 +7,7 @@ import InputBox from '@/components/form/InputBox';
 import useLogin from '@/hooks/useLoginQuery';
 import ErrorMsg from '@/components/error/ErrorMsg';
 import { useUserLocationStore } from '@/store/useUserLocationStore';
-import useProfile from '@/hooks/useProfileQuery';
+import getProfile from '@/api/profile';
 
 interface LoginData {
   email: string;
@@ -15,6 +15,7 @@ interface LoginData {
 }
 
 export default function LoginIndex() {
+  console.log('로그인 페이지 접속');
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginData>({
     email: '',
@@ -25,12 +26,9 @@ export default function LoginIndex() {
   // 위치정보 스토어
   const { setLocation } = useUserLocationStore();
 
-  // 프로필 api 결과값
-  const {
-    data: profileData,
-    isError: isProfileError,
-    error: profileError,
-  } = useProfile();
+  // 프로필 api 성공여부
+  const [isProfileError, setIsProfileError] = useState<boolean>(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
 
   // 로그인 api 결과값
   const { mutate: loginMutate, isError, error, reset, isPending } = useLogin();
@@ -70,10 +68,16 @@ export default function LoginIndex() {
         // 백엔드에서 받은 헤더 Authorization 토큰 -> localStorage에 저장
         localStorage.setItem('accessToken', loginResult.accessToken);
 
-        // location 정보 api 호출 성공 => 스토어 저장
-        if (profileData) {
-          setLocation(profileData.location);
-        }
+        // location 정보 api 호출
+        getProfile()
+          .then((profileData) => {
+            // location 스토어 저장
+            setLocation(profileData.location);
+          })
+          .catch((error) => {
+            setIsProfileError(true);
+            setProfileError(error.message);
+          });
 
         navigate('/');
       },
@@ -123,7 +127,7 @@ export default function LoginIndex() {
 
         {/* 위치정보 에러 메시지 표시 */}
         {isProfileError && profileError && (
-          <ErrorMsg errorMessage={profileError.message} />
+          <ErrorMsg errorMessage={profileError} />
         )}
       </form>
 
