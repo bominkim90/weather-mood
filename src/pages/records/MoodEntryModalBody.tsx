@@ -55,9 +55,11 @@ export default function MoodEntryModalBody({
     if (hasChanges) {
       updateRecordMutate(
         {
-          id: data.id,
-          emotion: editedEmotion,
-          memo: editedNotes,
+          recordId: data.id,
+          data: {
+            feelingId: editedEmotion,
+            memo: editedNotes,
+          },
         },
         {
           onSuccess: () => {
