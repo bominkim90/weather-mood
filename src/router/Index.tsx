@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/home/HomeIndex';
 import RecordsIndex from '@/pages/records/RecordsIndex';
 import Layout from '@/components/layout/Layout';
 import NotFound from '@/components/notFound/NotFound';
@@ -7,7 +6,8 @@ import ProfileIndex from '@/pages/profile/ProfileIndex';
 import ProfileEditIndex from '@/pages/profile/profileEdit/ProfileEditIndex';
 import LoginIndex from '@/pages/login/LoginIndex';
 import SignupIndex from '@/pages/signup/SignupIndex';
-import MoodAddIndex from '@/pages/home/moodAdd/MoodAddIndex';
+import MoodAddIndex from '@/pages/moodAdd/MoodAddIndex';
+import HomeIndex from '@/pages/home/HomeIndex';
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true, // path: '' 와 동일
-        element: <Home />,
+        element: <HomeIndex />,
       },
       {
         path: 'login',

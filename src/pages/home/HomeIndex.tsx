@@ -1,8 +1,8 @@
-import PlusButton from '@/components/button/PlusButton';
-import HomeFeeling from './HomeFeeling';
-import HomeWeather from './HomeWeather';
+import HomeMoodIndex from './mood/HomeMoodIndex';
+import HomeWeather from './weather/HomeWeather';
+import HomeSummary from './summary/HomeSummary';
 
-export default function Home() {
+export default function HomeIndex() {
   return (
     <>
       <div className="Home space-y-12">
@@ -10,16 +10,10 @@ export default function Home() {
         <HomeWeather />
 
         {/* 기분 정보 */}
-        <HomeFeeling />
+        <HomeMoodIndex />
 
         {/* 기분 통계 */}
-        <section>
-          일주일 기분 통계? <br />
-          여기 뭔가 추가하면 좋을거같은데..
-        </section>
-      </div>
-      <div className="fixed bottom-[76px] right-[16px]">
-        <PlusButton />
+        <HomeSummary />
       </div>
     </>
   );

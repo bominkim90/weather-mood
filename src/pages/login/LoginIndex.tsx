@@ -15,7 +15,6 @@ interface LoginData {
 }
 
 export default function LoginIndex() {
-  console.log('로그인 페이지 접속');
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginData>({
     email: '',
@@ -72,14 +71,14 @@ export default function LoginIndex() {
         getProfile()
           .then((profileData) => {
             // location 스토어 저장
-            setLocation(profileData.location);
+            console.log('profileData : ', profileData);
+            setLocation(profileData.cityName);
+            navigate('/');
           })
           .catch((error) => {
             setIsProfileError(true);
             setProfileError(error.message);
           });
-
-        navigate('/');
       },
       onError: (error: Error) => {
         console.log(error);

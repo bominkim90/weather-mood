@@ -1,6 +1,6 @@
 import BackButton from '@/components/button/BackButton';
 import Header from '@/components/layout/Header';
-import MoodAddMain from './moodAddMain/MoodAddMain';
+import MoodAddMain from './MoodAddMain';
 
 export default function MoodAddIndex() {
   return (

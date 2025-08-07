@@ -1,32 +1,33 @@
-import Button from '@/components/button/Button';
 import Modal from '@/components/modal/Modal';
-import { useFetchRecords } from '@/hooks/useRecordQuery';
+import { useGetRecordsQuery } from '@/hooks/useRecordQuery';
 import { useDateRangeStore } from '@/store/useDateRangeStore';
 import { useState } from 'react';
-import MoodEntryModalBody from './EntryModalBody';
+import MoodEntryModalBody from './MoodEntryModalBody';
+import formatDate from '@/util/formatDate';
+import Text from '@/components/text/Text';
 
 export default function Entries() {
   const { dateRange } = useDateRangeStore();
   const [showMoodEntry, setShowMoodEntry] = useState(false);
   const [clickedModalNumber, setClickedModalNumber] = useState(-1);
-  // const {
-  //   data: entries,
-  //   isFetching,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useFetchRecords(
-  //   formatDate(dateRange.from ?? new Date()),
-  //   formatDate(dateRange.to ?? new Date())
-  // );
+  const {
+    data: records,
+    isFetching,
+    isLoading,
+    isError,
+    error,
+  } = useGetRecordsQuery(
+    formatDate(dateRange.from ?? new Date()),
+    formatDate(dateRange.to ?? new Date())
+  );
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (isError) return <div>Error: {error.message}</div>;
-  // if (!entries || entries.list.length === 0) return <div>No entries found</div>;
-  // if (isFetching) return <div>데이터 갱신 중...</div>;
+  if (isLoading) return <Text text="Loading..." />;
+  if (isError) return <Text text={error.message} />;
+  if (!records || records.entries.length === 0)
+    return <Text text="No entries found" />;
+  if (isFetching) return <Text text="데이터 갱신 중..." />;
 
   const handleShowMoodEntry = (index: number) => {
-    console.log('showMoodEntry');
     setShowMoodEntry(true);
     setClickedModalNumber(index);
   };
@@ -36,48 +37,14 @@ export default function Entries() {
     setClickedModalNumber(-1);
   };
 
-  // 가상 데이터
-  const entriesData = {
-    eachEmotionCount: {
-      calm: 10,
-      happy: 20,
-      sad: 30,
-    },
-    list: [
-      {
-        main: 'sunny',
-        cityName: 'Seoul, Korea',
-        feelings: {
-          name: 'calm',
-          id: 1,
-        },
-        memo: 'Had a wonderful lunch with Sarah at the new cafe downtown. The weather was perfect and I felt so grateful for good friends.',
-        createdAt: '2025-07-20 10:00',
-      },
-      {
-        main: 'rainy',
-        cityName: 'dokyo, japan',
-        feelings: {
-          name: 'happy',
-          id: 2,
-        },
-        memo: 'Had a wonderful lunch with Sarah at the new cafe downtown. The weather was perfect and I felt so grateful for good friends.',
-        createdAt: '2025-07-20 10:00',
-      },
-    ],
-  };
-  const entries = entriesData.list;
+  const entries = records.entries;
 
   return (
-    <div>
-      <h2 className="text-lg font-medium mb-4">Recent Entries</h2>
-
-      {/* entry-list */}
+    <>
       <div className="space-y-3">
-        {/* entry-item */}
         {entries.map((entry, index) => (
           <div
-            className="box-white md"
+            className="EntryItem box-white md"
             key={index}
             onClick={() => handleShowMoodEntry(index)}
           >
@@ -85,18 +52,20 @@ export default function Entries() {
               <div className="flex gap-3 items-center">
                 <img
                   className="w-[40px] h-[40px]"
-                  src={`/icons/emotion/${entry.feelings.id}.svg`}
+                  src={`/icons/emotion/emotion_${entry.id}.svg`}
                   alt="mood"
                 />
                 <div>
-                  <p className="text-sm font-medium">{entry.feelings.name}</p>
-                  <p className="text-xs text-text-gray">{entry.createdAt}</p>
+                  <p className="text-sm font-medium mb-[2px]">
+                    {entry.feeling}
+                  </p>
+                  <p className="text-xs text-text-gray">{entry.time}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <img
                   className="w-[24px] h-[24px]"
-                  src={`/icons/weather/${entry.main}.svg`}
+                  src={entry.icon}
                   alt="weather"
                 />
                 <img
@@ -107,15 +76,18 @@ export default function Entries() {
               </div>
             </div>
             <div className="mt-3 text-sm text-text-gray-dark">{entry.memo}</div>
-
-            {showMoodEntry && clickedModalNumber === index && (
-              <Modal title="Mood Entry" onClose={handleCloseMoodModal}>
-                <MoodEntryModalBody data={entry} />
-              </Modal>
-            )}
           </div>
         ))}
       </div>
-    </div>
+      {/* 감정 상세 modal */}
+      {showMoodEntry && clickedModalNumber !== -1 && (
+        <Modal title="Mood Entry" onClose={handleCloseMoodModal}>
+          <MoodEntryModalBody
+            data={entries[clickedModalNumber]}
+            handleCloseMoodModal={handleCloseMoodModal}
+          />
+        </Modal>
+      )}
+    </>
   );
 }
