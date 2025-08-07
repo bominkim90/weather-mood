@@ -1,16 +1,16 @@
-import { Signup } from '@/model/signup';
+import { useState } from 'react';
 
-interface InputBoxProps {
+interface InputBoxProps<T> {
   id: string;
   title: string;
   inputType: string;
   placeholder: string;
-  formData: Signup;
-  setFormData: React.Dispatch<React.SetStateAction<Signup>>;
+  formData: T;
+  setFormData: React.Dispatch<React.SetStateAction<T>>;
   clearErrors: () => void;
 }
 
-export default function InputBox({
+export default function InputBox<T>({
   id,
   title,
   inputType,
@@ -18,11 +18,15 @@ export default function InputBox({
   formData,
   setFormData,
   clearErrors,
-}: InputBoxProps) {
+}: InputBoxProps<T>) {
+  const [value, setValue] = useState<string>('');
+
   const onChangeHandler = (value: string) => {
+    setValue(value);
     setFormData({ ...formData, [id]: value });
     clearErrors(); // 타이핑할 때 에러 초기화
   };
+
   return (
     <div className="input-box">
       <label htmlFor={id} className="text-sm text-text-secondary">
@@ -34,7 +38,7 @@ export default function InputBox({
         placeholder={placeholder}
         className="mt-2 block box-white w-full sm text-sm"
         onChange={(e) => onChangeHandler(e.target.value)}
-        value={formData[id as keyof Signup]}
+        value={value}
       />
     </div>
   );

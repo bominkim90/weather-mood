@@ -80,7 +80,7 @@ export default function SignupMain() {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
-          <InputBox
+          <InputBox<Signup>
             id="email"
             title="Email"
             inputType="text"
@@ -90,7 +90,7 @@ export default function SignupMain() {
             clearErrors={clearErrors}
           />
 
-          <InputBox
+          <InputBox<Signup>
             id="nickName"
             title="Nickname"
             inputType="text"
@@ -100,7 +100,7 @@ export default function SignupMain() {
             clearErrors={clearErrors}
           />
 
-          <InputBox
+          <InputBox<Signup>
             id="password"
             title="Password"
             inputType="password"
@@ -110,7 +110,7 @@ export default function SignupMain() {
             clearErrors={clearErrors}
           />
 
-          <InputBox
+          <InputBox<Signup>
             id="confirm_password"
             title="Confirm Password"
             inputType="password"
