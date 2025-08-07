@@ -7,7 +7,6 @@ import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
 import { AddMoodData } from '@/model/addMoodData';
 import { useNavigate } from 'react-router-dom';
-import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function MoodAddMain() {
   const navigate = useNavigate();
@@ -23,12 +22,6 @@ export default function MoodAddMain() {
 
   // 감정 등록 핸들러
   const saveMoodHandler = () => {
-    // 위치 스토어 데이터 가져오기
-    const { location } = useUserLocationStore();
-    if (location !== '') {
-      setMoodData((prev) => ({ ...prev, location }));
-    }
-
     // 감정 등록
     addMoodMutate(moodData, {
       onSuccess: () => {

@@ -1,19 +1,20 @@
 import Button from '@/components/button/Button';
 import useProfile from '@/hooks/useProfileQuery';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import ErrorMsg from '@/components/error/ErrorMsg';
 
 export default function ProfileMain() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: profileData, isPending, isError, error } = useProfile();
 
   if (isPending) return <div>Loading...</div>;
   if (isError) return <ErrorMsg errorMessage={error.message} />;
 
-  console.log('profileData : ', profileData);
-
   const logoutHandler = () => {
     localStorage.removeItem('accessToken');
+    queryClient.clear(); // 모든 캐시 초기화
     navigate('/login');
   };
 

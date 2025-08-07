@@ -1,17 +1,19 @@
-export interface RecordsStatus {
-  eachEmotionCount: {
-    [key: string]: number;
-  };
-  list: Record[];
+export interface MoodRecordsStatus {
+  totalEntries: number;
+  mostFrequentFeeling: string;
+  feelingCounts: Record<string, number>[];
+  entries: MoodRecord[];
 }
 
-export interface Record {
+export interface MoodRecord {
+  date: string;
+  description: string;
+  feeling: string;
+  feelsLike: number;
+  icon: string;
+  id: number;
   main: string;
-  cityName: string;
-  feelings: {
-    name: string;
-    id: number;
-  };
   memo: string;
-  createdAt: string;
+  temperature: number;
+  time: string;
 }

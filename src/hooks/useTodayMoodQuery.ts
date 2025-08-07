@@ -1,11 +1,10 @@
 import { getTodayMood } from '@/api/todayMood';
 import { useQuery } from '@tanstack/react-query';
 
-export default function useTodayMood(date: string) {
+export default function useTodayMood() {
   return useQuery({
-    queryKey: ['getTodayMood', date],
-    queryFn: () => getTodayMood(date),
-    enabled: !!date, // date 빈 문자열이면 쿼리 실행하지 않음
+    queryKey: ['getTodayMood'],
+    queryFn: () => getTodayMood(),
     retry: 1, // 재시도 1번 => 설정을 안하면 (기본값 3이지만) 무한 재시도가 된다.
     retryDelay: 3000, // 3초 후 재시도
     refetchOnWindowFocus: true, // 탭 포커스시 자동 재요청 (기본값 true)

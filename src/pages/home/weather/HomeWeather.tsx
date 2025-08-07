@@ -1,22 +1,23 @@
-import useTodayMood from '@/hooks/useTodayMoodQuery';
+import Text from '@/components/text/Text';
+import useTodayWeather from '@/hooks/useTodayWeatherQuery';
 import getTodayDate from '@/util/getTodayDate';
 
 export default function HomeWeather() {
   const {
-    data: todayMoodData,
+    data: todayWeatherData,
     isPending,
     isError,
     error,
-  } = useTodayMood(getTodayDate());
+  } = useTodayWeather();
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error?.message}</div>;
+  if (isPending) return <Text text="Loading..." />;
+  if (isError) return <Text text={error?.message} />;
 
   return (
     <div className="HomeWeather box-white lg">
       <div className="flex justify-between items-center">
         <strong className="text-lg font-bold">
-          {todayMoodData?.location.location}
+          {todayWeatherData?.location.location}
         </strong>
         <span className="text-sm text-text-gray">{getTodayDate()}</span>
       </div>
@@ -26,14 +27,14 @@ export default function HomeWeather() {
             <span>30</span>°C
           </p>
           <span className="text-sm text-text-gray">
-            {todayMoodData?.weather.description}
+            {todayWeatherData?.weather.description}
           </span>
         </div>
         <div>
           <img
             className="block w-[25px] h-[24px]"
-            src={todayMoodData?.weather.icon}
-            alt={todayMoodData?.weather.description}
+            src={todayWeatherData?.weather.icon}
+            alt={todayWeatherData?.weather.description}
           />
         </div>
       </div>

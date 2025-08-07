@@ -49,7 +49,7 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       // HTTP에러가 아닌, 네트워크 에러라면 error.response가 없을 수 있음
       const { status } = error.response;
-      if (status === 401) {
+      if (status === 401 && window.location.pathname !== '/login') {
         // jwt 만료 or 로그인 안 함 => 로그인 페이지로 이동
         window.location.href = '/login';
         console.log('로그인이 필요합니다.');
