@@ -1,22 +1,18 @@
+import { AddMoodData } from '@/model/addMoodData';
 import { useState } from 'react';
 
-interface EmotionData {
-  mood: number;
-  memo: string;
-  date: string;
-}
 interface MoodMemoProps {
-  setEmotionData: React.Dispatch<React.SetStateAction<EmotionData>>;
+  setMoodData: React.Dispatch<React.SetStateAction<AddMoodData>>;
 }
 
-export default function MoodMemo({ setEmotionData }: MoodMemoProps) {
+export default function MoodMemo({ setMoodData }: MoodMemoProps) {
   const [text, setText] = useState<string>('');
   const TEXT_LIMIT = 100;
 
   const onChangeHandler = (value: string) => {
     if (value.length > TEXT_LIMIT) return;
     setText(value);
-    setEmotionData((prev) => ({ ...prev, memo: value }));
+    setMoodData((prev) => ({ ...prev, memo: value }));
   };
 
   return (

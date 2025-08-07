@@ -6,10 +6,8 @@ import Button from '@/components/button/Button';
 import InputBox from '@/components/form/InputBox';
 import useLogin from '@/hooks/useLoginQuery';
 import ErrorMsg from '@/components/error/ErrorMsg';
-
-interface CustomFormData {
-  [key: string]: string | object;
-}
+import { useUserLocationStore } from '@/store/useUserLocationStore';
+import useProfile from '@/hooks/useProfileQuery';
 
 interface LoginData {
   email: string;
@@ -18,12 +16,23 @@ interface LoginData {
 
 export default function LoginIndex() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<CustomFormData>({
+  const [formData, setFormData] = useState<LoginData>({
     email: '',
     password: '',
   });
   const [validationError, setValidationError] = useState<string | null>(null);
 
+  // 위치정보 스토어
+  const { setLocation } = useUserLocationStore();
+
+  // 프로필 api 결과값
+  const {
+    data: profileData,
+    isError: isProfileError,
+    error: profileError,
+  } = useProfile();
+
+  // 로그인 api 결과값
   const { mutate: loginMutate, isError, error, reset, isPending } = useLogin();
 
   // 에러 초기화 함수
@@ -58,9 +67,14 @@ export default function LoginIndex() {
 
     loginMutate(loginData, {
       onSuccess: (loginResult) => {
-        console.log('loginResult : ', loginResult);
         // 백엔드에서 받은 헤더 Authorization 토큰 -> localStorage에 저장
         localStorage.setItem('accessToken', loginResult.accessToken);
+
+        // location 정보 api 호출 성공 => 스토어 저장
+        if (profileData) {
+          setLocation(profileData.location);
+        }
+
         navigate('/');
       },
       onError: (error: Error) => {
@@ -74,17 +88,17 @@ export default function LoginIndex() {
       <Header title="Login" />
       <form onSubmit={handleSubmit} className="py-8">
         <div className="space-y-4">
-          <InputBox
+          <InputBox<LoginData>
             id="email"
             title="Email"
             inputType="text"
             placeholder="Enter your email"
+            clearErrors={clearErrors}
             formData={formData}
             setFormData={setFormData}
-            clearErrors={clearErrors}
           />
 
-          <InputBox
+          <InputBox<LoginData>
             id="password"
             title="Password"
             inputType="password"
@@ -103,9 +117,14 @@ export default function LoginIndex() {
           disabled={isPending}
         />
 
-        {/* 에러 메시지 표시 */}
+        {/* 로그인 에러 메시지 표시 */}
         {isError && error && <ErrorMsg errorMessage={error.message} />}
         {validationError && <ErrorMsg errorMessage={validationError} />}
+
+        {/* 위치정보 에러 메시지 표시 */}
+        {isProfileError && profileError && (
+          <ErrorMsg errorMessage={profileError.message} />
+        )}
       </form>
 
       <div className="text-center text-text-secondary mt-4">

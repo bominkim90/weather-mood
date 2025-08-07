@@ -5,28 +5,34 @@ import { useState } from 'react';
 import useAddMood from '@/hooks/useAddMoodQuery';
 import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
-
-interface EmotionData {
-  mood: number;
-  memo: string;
-  date: string;
-}
+import { AddMoodData } from '@/model/addMoodData';
+import { useNavigate } from 'react-router-dom';
+import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function MoodAddMain() {
+  const navigate = useNavigate();
   const todayDate = getTodayDate();
 
-  const [emotionData, setEmotionData] = useState<EmotionData>({
-    mood: 0,
+  const [moodData, setMoodData] = useState<AddMoodData>({
+    location: '',
+    feelingId: 0,
     memo: '',
     date: todayDate,
   });
   const { mutate: addMoodMutate, isPending, isError, error } = useAddMood();
 
-  const saveMood = () => {
-    console.log('saveMood');
-    addMoodMutate(emotionData, {
+  // 감정 등록 핸들러
+  const saveMoodHandler = () => {
+    // 위치 스토어 데이터 가져오기
+    const { location } = useUserLocationStore();
+    if (location !== '') {
+      setMoodData((prev) => ({ ...prev, location }));
+    }
+
+    // 감정 등록
+    addMoodMutate(moodData, {
       onSuccess: () => {
-        console.log('success');
+        navigate('/');
       },
       onError: () => {
         console.log('error');
@@ -37,17 +43,17 @@ export default function MoodAddMain() {
   return (
     <div>
       {/* 감정 선택 */}
-      <MoodSelect setEmotionData={setEmotionData} />
+      <MoodSelect setMoodData={setMoodData} />
 
       {/* 감정 한줄 평 */}
-      <MoodMemo setEmotionData={setEmotionData} />
+      <MoodMemo setMoodData={setMoodData} />
 
       {/* 저장 버튼 */}
       <Button
         theme="POSITIVE"
         title="Save Mood"
         addClass="w-full rounded-full"
-        onClick={saveMood}
+        onClick={saveMoodHandler}
         disabled={isPending}
       />
       {isError && <ErrorMsg errorMessage={error.message} />}

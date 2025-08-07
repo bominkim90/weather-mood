@@ -1,17 +1,12 @@
+import { AddMoodData } from '@/model/addMoodData';
 import { emotions } from '@/model/emotions';
 import { useState } from 'react';
 
-interface EmotionData {
-  mood: number;
-  memo: string;
-  date: string;
-}
-
 interface MoodSelectProps {
-  setEmotionData: React.Dispatch<React.SetStateAction<EmotionData>>;
+  setMoodData: React.Dispatch<React.SetStateAction<AddMoodData>>;
 }
 
-export default function MoodSelect({ setEmotionData }: MoodSelectProps) {
+export default function MoodSelect({ setMoodData }: MoodSelectProps) {
   const [selectedMood, setSelectedMood] = useState<number>(0);
 
   const activeClass =
@@ -19,7 +14,7 @@ export default function MoodSelect({ setEmotionData }: MoodSelectProps) {
 
   const selectMoodFn = (id: number) => {
     setSelectedMood(id);
-    setEmotionData((prev) => ({ ...prev, mood: id }));
+    setMoodData((prev) => ({ ...prev, feelingId: id }));
   };
 
   return (
