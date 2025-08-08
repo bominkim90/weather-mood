@@ -71,6 +71,12 @@ export default function LoginIndex() {
         getProfile()
           .then((profileData) => {
             setLocationStore(profileData.cityName);
+            // 해결방법 1: setTimeout으로 스토어 업데이트 완료 후 네비게이션
+            // setTimeout(() => navigate('/'), 0);
+
+            // 해결방법 2: 현재 사용중인 방법 - localStorage 병행 사용
+            // Zustand persist 미들웨어 활용
+
             navigate('/');
           })
           .catch((error) => {

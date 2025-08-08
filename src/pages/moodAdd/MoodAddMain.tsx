@@ -12,6 +12,21 @@ import { useUserLocationStore } from '@/store/useUserLocationStore';
 export default function MoodAddMain() {
   const { locationStore } = useUserLocationStore(); // 로그인 성공 시 담기는 location 스토어 정보
   const [location, setLocation] = useState(''); // 로그인 성공 시 담기는 location 스토어 정보를 로컬 상태로 저장
+
+  // 문제 해결을 위한 추가 방법들:
+  // 1. localStorage에서 직접 읽어오는 방법
+  // const locationFromStorage = localStorage.getItem('userLocation') || '';
+
+  // 2. 스토어 값이 비어있을 때 localStorage에서 가져오는 방법
+  // useEffect(() => {
+  //   if (!locationStore) {
+  //     const savedLocation = localStorage.getItem('userLocation');
+  //     if (savedLocation) setLocation(savedLocation);
+  //   } else {
+  //     setLocation(locationStore);
+  //   }
+  // }, [locationStore]);
+
   useEffect(() => {
     setLocation(locationStore);
   }, [locationStore]);
