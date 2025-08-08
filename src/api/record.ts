@@ -1,4 +1,5 @@
 import axiosInstance from '@/lib/axios';
+import { AddMoodData } from '@/model/addMoodData';
 
 // 감정 조회
 export async function getRecords(start: string, end: string) {
@@ -6,6 +7,11 @@ export async function getRecords(start: string, end: string) {
     `/api/v1/record?start=${start}&end=${end}`
   );
   return response.data;
+}
+
+// 감정 등록
+export default function postRecord(data: AddMoodData) {
+  return axiosInstance.post('api/v1/memo', data);
 }
 
 // 감정 수정 (단일) => 변경 가능한 데이터 : 감정, 메모 (다른데이터 변경 불가능)

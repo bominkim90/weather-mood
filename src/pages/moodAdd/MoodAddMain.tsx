@@ -2,7 +2,7 @@ import Button from '@/components/button/Button';
 import MoodSelect from './MoodSelect';
 import MoodMemo from './MoodMemo';
 import { useState } from 'react';
-import useAddMood from '@/hooks/useAddMoodQuery';
+import { useAddRecordQuery } from '@/hooks/useRecordQuery';
 import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
 import { AddMoodData } from '@/model/addMoodData';
@@ -18,12 +18,17 @@ export default function MoodAddMain() {
     memo: '',
     date: todayDate,
   });
-  const { mutate: addMoodMutate, isPending, isError, error } = useAddMood();
+  const {
+    mutate: addRecordMutate,
+    isPending,
+    isError,
+    error,
+  } = useAddRecordQuery();
 
   // 감정 등록 핸들러
-  const saveMoodHandler = () => {
+  const saveRecordHandler = () => {
     // 감정 등록
-    addMoodMutate(moodData, {
+    addRecordMutate(moodData, {
       onSuccess: () => {
         navigate('/');
       },
@@ -46,7 +51,7 @@ export default function MoodAddMain() {
         theme="POSITIVE"
         title="Save Mood"
         addClass="w-full rounded-full"
-        onClick={saveMoodHandler}
+        onClick={saveRecordHandler}
         disabled={isPending}
       />
       {isError && <ErrorMsg errorMessage={error.message} />}
