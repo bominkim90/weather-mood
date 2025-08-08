@@ -15,9 +15,6 @@ export default function MoodAddMain() {
   useEffect(() => {
     setLocation(locationStore);
   }, [locationStore]);
-  useEffect(() => {
-    console.log('location : ', location);
-  }, [location]);
 
   const navigate = useNavigate();
   const todayDate = getTodayDate();
@@ -38,9 +35,6 @@ export default function MoodAddMain() {
   // 감정 등록 핸들러
   const saveRecordHandler = () => {
     if (!location || moodData.feelingId === 0 || moodData.memo === '') {
-      console.log(location);
-      console.log(moodData.feelingId);
-      console.log(moodData.memo);
       alert('감정 선택 후 등록해주세요.');
       return;
     }
