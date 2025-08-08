@@ -23,7 +23,7 @@ export default function LoginIndex() {
   const [validationError, setValidationError] = useState<string | null>(null);
 
   // 위치정보 스토어
-  const { setLocation } = useUserLocationStore();
+  const { setLocationStore } = useUserLocationStore();
 
   // 프로필 api 성공여부
   const [isProfileError, setIsProfileError] = useState<boolean>(false);
@@ -67,13 +67,10 @@ export default function LoginIndex() {
         // 백엔드에서 받은 헤더 Authorization 토큰 -> localStorage에 저장
         localStorage.setItem('accessToken', loginResult.accessToken);
 
-        // location 정보 api 호출
+        // location 정보 api 호출 => 스토어에 저장
         getProfile()
           .then((profileData) => {
-            // location 스토어 저장
-            console.log('profileData : ', profileData);
-            console.log('profileData.cityName : ', profileData.cityName);
-            setLocation(profileData.cityName);
+            setLocationStore(profileData.cityName);
             navigate('/');
           })
           .catch((error) => {

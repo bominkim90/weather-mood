@@ -3,18 +3,21 @@ import useProfile from '@/hooks/useProfileQuery';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import ErrorMsg from '@/components/error/ErrorMsg';
+import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function ProfileMain() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: profileData, isPending, isError, error } = useProfile();
+  const { setLocation } = useUserLocationStore();
 
   if (isPending) return <div>Loading...</div>;
   if (isError) return <ErrorMsg errorMessage={error.message} />;
 
   const logoutHandler = () => {
-    localStorage.removeItem('accessToken');
-    queryClient.clear(); // 모든 캐시 초기화
+    localStorage.removeItem('accessToken'); // 로그인 토큰 삭제
+    queryClient.clear(); // 모든 감정기록 캐시 초기화
+    setLocation(''); // location 스토어 초기화
     navigate('/login');
   };
 
