@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await axiosInstance.post('/auth/refresh');
+        const res = await axiosInstance.post('/api/v1/auth/refresh');
         const newToken = res.data.accessToken;
 
         localStorage.setItem('accessToken', newToken);
