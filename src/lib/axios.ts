@@ -1,63 +1,67 @@
+// lib/axios.ts
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // 이 설정 있어야 => 쿠키가 자동으로 포함됨
 });
 
-// 공통 request 헤더 (토큰 자동 추가)
+// 요청 인터셉터: accessToken 자동 삽입
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 요청을 보내기 전에 수행할 작업 (요청 성공 시)
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    // 요청을 보내기 전에 에러가 발생했을 때 처리 (요청 에러 시)
-    Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-/*  
-  첫 번째 인수 함수의 config : axios가 실제 HTTP 요청을 보낼 때 사용하는 설정 객체
-  구조: url, method, headers, params, data 등 모든 요청 설정 정보가 포함됨
-  {
-    url: "/api/somewhere",
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer xxxxxxx"
-    },
-    params: { ... },
-    data: { ... }
-  }
-*/
 
-// 공통 response 처리 (토큰 만료, 에러 메시지 처리)
+// 응답 인터셉터: 401 처리 → refresh 시도
 axiosInstance.interceptors.response.use(
-  // 정상 응답 시 실행되는 콜백 => 받은 응답을 그대로 반환 : 여기서 응답을 가공해서 반환하거나 할 수 있음
   (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const accessToken = localStorage.getItem('accessToken');
 
-  // 에러 발생 시 실행되는 콜백 => HTTP 에러 또는 네트워크 에러 등 모든 axios 에러 처리
-  (error) => {
-    if (error.response) {
-      // HTTP에러가 아닌, 네트워크 에러라면 error.response가 없을 수 있음
-      const { status } = error.response;
-      if (status === 401 && window.location.pathname !== '/login') {
-        // jwt 만료 or 로그인 안 함 => 로그인 페이지로 이동
+    // 401 에러 + accessToken이 '있었던' 경우 → refresh 시도
+    if (
+      error.response?.status === 401 &&
+      accessToken &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const res = await axiosInstance.post('/auth/refresh');
+        const newToken = res.data.accessToken;
+
+        localStorage.setItem('accessToken', newToken);
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
         window.location.href = '/login';
-        console.log('로그인이 필요합니다.');
-      } else if (status === 500) {
-        console.error('서버 오류 발생');
+        return Promise.reject(refreshError);
       }
     }
-    return Promise.reject(error); // 즉시 '실패' 상태의 Promise를 반환 => 사용한곳에서 .catch() 등으로 처리 가능
+
+    // accessToken이 아예 '없는' 경우 → 로그인 페이지 이동
+    if (
+      error.response?.status === 401 &&
+      !accessToken &&
+      window.location.pathname !== '/login'
+    ) {
+      window.location.href = '/login';
+    }
+
+    return Promise.reject(error);
   }
 );
 
