@@ -12,6 +12,7 @@ import { useUserLocationStore } from '@/store/useUserLocationStore';
 export default function MoodAddMain() {
   // 로그인 성공 시 담기는 location(cityName)정보
   const { location } = useUserLocationStore();
+  console.log('location : ', location);
   const navigate = useNavigate();
   const todayDate = getTodayDate();
 
@@ -30,12 +31,20 @@ export default function MoodAddMain() {
 
   // 감정 등록 핸들러
   const saveRecordHandler = () => {
+    if (!location || moodData.feelingId === 0 || moodData.memo === '') {
+      console.log(location);
+      console.log(moodData.feelingId);
+      console.log(moodData.memo);
+      alert('감정 선택 후 등록해주세요.');
+      return;
+    }
+
     addRecordMutate(moodData, {
       onSuccess: () => {
         navigate('/');
       },
       onError: () => {
-        alert('감정 등록 실패패');
+        alert('감정 등록 실패');
       },
     });
   };

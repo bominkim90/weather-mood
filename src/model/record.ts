@@ -11,7 +11,7 @@ export interface MoodRecord {
   feeling: string;
   feelsLike: number;
   icon: string;
-  id: number;
+  feelingId: number;
   main: string;
   memo: string;
   temperature: number;

@@ -6,6 +6,7 @@ export default function HomeMoodIndex() {
   const feelingButtonStyle =
     'flex items-center justify-center w-[128px] h-[128px] rounded-full overflow-hidden';
   const navigate = useNavigate();
+
   const {
     data: todayFeelingDataArray,
     isPending,
@@ -15,6 +16,10 @@ export default function HomeMoodIndex() {
 
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
+  console.log(
+    '오늘 감정기록 불러오기 todayFeelingDataArray : ',
+    todayFeelingDataArray
+  );
   const todayFeelingData = todayFeelingDataArray[0];
 
   const addMoodButtonClick = () => {
@@ -28,8 +33,8 @@ export default function HomeMoodIndex() {
           <div className={feelingButtonStyle}>
             <img
               className="block w-full h-full"
-              src={`/icons/emotion/emotion_${todayFeelingData.id}.svg`}
-              alt={emotions[Number(todayFeelingData.id) - 1].name}
+              src={`/icons/emotion/emotion_${todayFeelingData.feelingId}.svg`}
+              alt={emotions[Number(todayFeelingData.feelingId) - 1].name}
             />
           </div>
           <p className="text-text-gray text-sm">{todayFeelingData.memo}</p>
