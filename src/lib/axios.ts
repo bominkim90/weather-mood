@@ -38,28 +38,15 @@ axiosInstance.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       accessToken &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/api/v1/auth/refresh')
     ) {
       originalRequest._retry = true;
 
       try {
         console.log('refresh 시도');
-        // const res = await axiosInstance.post('/api/v1/auth/refresh');
-        const res = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh`,
-          {},
-          {
-            baseURL: import.meta.env.VITE_API_BASE_URL,
-            timeout: 10000,
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
+        const res = await axiosInstance.post('/api/v1/auth/refresh');
         const newToken = res.data.accessToken; // 바디 (JSON)
-        // const newToken = res.headers.authorization; // 헤더 (Authorization)
 
         localStorage.setItem('accessToken', newToken);
         axiosInstance.defaults.headers.common.Authorization = `Bearer ${newToken}`;
