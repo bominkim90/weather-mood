@@ -7,9 +7,10 @@ import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
 import { AddMoodData } from '@/model/addMoodData';
 import { useNavigate } from 'react-router-dom';
-import getProfile from '@/api/profile';
+import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function MoodAddMain() {
+  const { location } = useUserLocationStore();
   const navigate = useNavigate();
   const todayDate = getTodayDate();
 
@@ -28,27 +29,19 @@ export default function MoodAddMain() {
 
   // 감정 등록 핸들러
   const saveRecordHandler = () => {
-    // location(cityName) 불러오기
-    getProfile()
-      .then((res) => {
-        console.log(res);
-        if (res.cityName) {
-          // 업데이트된 데이터로 직접 mutation 실행
-          const updatedMoodData = {
-            ...moodData,
-            location: res.cityName,
-          };
+    const updatedMoodData = {
+      ...moodData,
+      location: location,
+    };
 
-          addRecordMutate(updatedMoodData, {
-            onSuccess: () => {
-              navigate('/');
-            },
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    addRecordMutate(updatedMoodData, {
+      onSuccess: () => {
+        navigate('/');
+      },
+      onError: () => {
+        alert('감정 등록 실패패');
+      },
+    });
   };
 
   return (
