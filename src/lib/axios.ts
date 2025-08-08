@@ -29,6 +29,11 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     const accessToken = localStorage.getItem('accessToken');
 
+    if (error.response) {
+      console.log('HTTP 통신 자체 성공');
+    } else {
+      console.log('HTTP 통신 자체 실패');
+    }
     // 401 에러 + accessToken이 '있었던' 경우 → refresh 시도
     if (
       error.response?.status === 401 &&
@@ -38,6 +43,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
+        console.log('refresh 시도');
         const res = await axiosInstance.post('/api/v1/auth/refresh');
         const newToken = res.data.accessToken;
 
