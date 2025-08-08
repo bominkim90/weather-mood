@@ -1,7 +1,7 @@
 import Button from '@/components/button/Button';
 import MoodSelect from './MoodSelect';
 import MoodMemo from './MoodMemo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAddRecordQuery } from '@/hooks/useRecordQuery';
 import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
@@ -10,9 +10,15 @@ import { useNavigate } from 'react-router-dom';
 import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function MoodAddMain() {
-  // 로그인 성공 시 담기는 location(cityName)정보
-  const { location } = useUserLocationStore();
-  console.log('location : ', location);
+  const { locationStore } = useUserLocationStore(); // 로그인 성공 시 담기는 location 스토어 정보
+  const [location, setLocation] = useState(''); // 로그인 성공 시 담기는 location 스토어 정보를 로컬 상태로 저장
+  useEffect(() => {
+    setLocation(locationStore);
+  }, [locationStore]);
+  useEffect(() => {
+    console.log('location : ', location);
+  }, [location]);
+
   const navigate = useNavigate();
   const todayDate = getTodayDate();
 

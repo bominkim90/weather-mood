@@ -1,24 +1,24 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+// import { persist } from 'zustand/middleware';
 
 interface UserLocationState {
-  location: string;
-  setLocation: (location: string) => void;
+  locationStore: string;
+  setLocationStore: (location: string) => void;
 }
 
-// export const useUserLocationStore = create<UserLocationState>((set) => ({
-//   location: '',
-//   setLocation: (location: string) => set({ location }),
-// }));
+export const useUserLocationStore = create<UserLocationState>((set) => ({
+  locationStore: '',
+  setLocationStore: (locationStore: string) => set({ locationStore }),
+}));
 
-export const useUserLocationStore = create<UserLocationState>()(
-  persist(
-    (set) => ({
-      location: '',
-      setLocation: (location: string) => set({ location }),
-    }),
-    {
-      name: 'user-location-storage',
-    }
-  )
-);
+// export const useUserLocationStore = create<UserLocationState>()(
+//   persist(
+//     (set) => ({
+//       locationStore: '',
+//       setLocationStore: (locationStore: string) => set({ locationStore }),
+//     }),
+//     {
+//       name: 'user-location-storage',
+//     }
+//   )
+// );
