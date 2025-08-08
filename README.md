@@ -90,3 +90,9 @@ weather-mood/
 │   └── icons/        # SVG 아이콘 파일
 └── package.json
 ```
+
+## 배포
+
+```
+   vercel 이용
+```
