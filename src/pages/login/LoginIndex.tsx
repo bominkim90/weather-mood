@@ -72,6 +72,7 @@ export default function LoginIndex() {
           .then((profileData) => {
             // location 스토어 저장
             console.log('profileData : ', profileData);
+            console.log('profileData.cityName : ', profileData.cityName);
             setLocation(profileData.cityName);
             navigate('/');
           })
