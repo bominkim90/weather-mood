@@ -10,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import { useUserLocationStore } from '@/store/useUserLocationStore';
 
 export default function MoodAddMain() {
+  // 로그인 성공 시 담기는 location(cityName)정보
   const { location } = useUserLocationStore();
   const navigate = useNavigate();
   const todayDate = getTodayDate();
 
   const [moodData, setMoodData] = useState<AddMoodData>({
-    location: '',
+    location: location,
     feelingId: 0,
     memo: '',
     date: todayDate,
@@ -29,12 +30,7 @@ export default function MoodAddMain() {
 
   // 감정 등록 핸들러
   const saveRecordHandler = () => {
-    const updatedMoodData = {
-      ...moodData,
-      location: location,
-    };
-
-    addRecordMutate(updatedMoodData, {
+    addRecordMutate(moodData, {
       onSuccess: () => {
         navigate('/');
       },
