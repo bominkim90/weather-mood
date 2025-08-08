@@ -38,6 +38,7 @@ export default function Entries() {
   };
 
   const entries = records.entries;
+  console.log('entries : ', entries);
 
   return (
     <>
@@ -52,7 +53,7 @@ export default function Entries() {
               <div className="flex gap-3 items-center">
                 <img
                   className="w-[40px] h-[40px]"
-                  src={`/icons/emotion/emotion_${entry.id}.svg`}
+                  src={`/icons/emotion/emotion_${entry.feelingId}.svg`}
                   alt="mood"
                 />
                 <div>

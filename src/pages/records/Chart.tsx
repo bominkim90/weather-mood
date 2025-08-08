@@ -30,7 +30,7 @@ export default function Chart() {
 
   const rawData = records.entries.map((record) => ({
     date: record.date.split('-')[2],
-    emotionId: record.id,
+    emotionId: record.feelingId,
     emotionName: record.feeling,
   }));
 
