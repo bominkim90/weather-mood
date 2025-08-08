@@ -60,7 +60,7 @@ export default function Entries() {
                   <p className="text-sm font-medium mb-[2px]">
                     {entry.feeling}
                   </p>
-                  <p className="text-xs text-text-gray">{entry.time}</p>
+                  <p className="text-xs text-text-gray">{entry.date}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">

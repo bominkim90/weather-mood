@@ -117,7 +117,7 @@ export default function MoodEntryModalBody({
               <strong className="text-lg font-medium">{data.feeling}</strong>
             </>
           )}
-          <p className="text-xs text-text-gray">{data.time}</p>
+          <p className="text-xs text-text-gray">{data.date}</p>
         </div>
 
         <div className="flex justify-between items-center py-1 border-b border-gray-200">
