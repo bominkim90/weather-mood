@@ -28,29 +28,27 @@ export default function MoodAddMain() {
 
   // 감정 등록 핸들러
   const saveRecordHandler = () => {
-    // 감정 등록
-    addRecordMutate(moodData, {
-      onSuccess: () => {
-        // location(cityName) 불러오기
-        getProfile()
-          .then((res) => {
-            console.log(res);
-            if (res.cityName) {
-              setMoodData((prev) => ({
-                ...prev,
-                location: res.cityName,
-              }));
-            }
-            navigate('/');
-          })
-          .catch((err) => {
-            console.log(err);
+    // location(cityName) 불러오기
+    getProfile()
+      .then((res) => {
+        console.log(res);
+        if (res.cityName) {
+          // 업데이트된 데이터로 직접 mutation 실행
+          const updatedMoodData = {
+            ...moodData,
+            location: res.cityName,
+          };
+
+          addRecordMutate(updatedMoodData, {
+            onSuccess: () => {
+              navigate('/');
+            },
           });
-      },
-      onError: () => {
-        console.log('error');
-      },
-    });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
