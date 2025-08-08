@@ -12,6 +12,9 @@ interface MoodEntryModalBodyProps {
   handleCloseMoodModal: () => void;
 }
 
+const sectionTitleStyle = 'text-sm text-text-gray py-2';
+const sectionContentStyle = 'flex items-center border-b border-gray-100';
+
 export default function MoodEntryModalBody({
   data,
   handleCloseMoodModal,
@@ -120,23 +123,20 @@ export default function MoodEntryModalBody({
           <p className="text-xs text-text-gray">{data.date}</p>
         </div>
 
-        <div className="flex justify-between items-center py-1 border-b border-gray-200">
-          <p className="text-sm text-text-gray">Weather</p>
+        <div className={`${sectionContentStyle} justify-between`}>
+          <p className={sectionTitleStyle}>Weather</p>
           <div className="flex items-center gap-2">
             <img className="w-[24px] h-[24px]" src={data.icon} alt="weather" />
             <p className="text-sm text-text-default">{data.description}</p>
           </div>
         </div>
-        <div className="flex justify-between items-center py-1 border-b border-gray-200">
-          <p className="text-sm text-text-gray">Location</p>
-          <div className="flex items-center gap-2">
-            <img className="w-[24px] h-[24px]" src={data.icon} alt="weather" />
-            {/* <p className="text-sm text-text-default">{data.cityName}</p> */}
-          </div>
+        <div className={`${sectionContentStyle} justify-between`}>
+          <p className={sectionTitleStyle}>Location</p>
+          <p className="text-sm text-text-default">{data.cityName}</p>
         </div>
 
-        <div>
-          <p className="text-sm text-text-gray py-2">Notes</p>
+        <div className={`${sectionContentStyle} flex-col items-start pb-2`}>
+          <p className={sectionTitleStyle}>Notes</p>
           {isEditMode ? (
             <input
               type="text"

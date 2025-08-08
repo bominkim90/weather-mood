@@ -38,7 +38,6 @@ export default function Entries() {
   };
 
   const entries = records.entries;
-  console.log('entries : ', entries);
 
   return (
     <>

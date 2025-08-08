@@ -7,6 +7,7 @@ export interface MoodRecordsStatus {
 
 export interface MoodRecord {
   id: number;
+  cityName: string;
   date: string;
   description: string;
   feeling: string;

@@ -114,7 +114,7 @@ export default function LoginIndex() {
           theme="POSITIVE"
           type="submit"
           addClass="mt-6 w-full rounded-full"
-          title="Login"
+          title={isPending ? '로그인 중 입니다...' : 'Login'}
           disabled={isPending}
         />
 

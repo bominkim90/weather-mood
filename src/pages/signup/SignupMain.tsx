@@ -44,7 +44,6 @@ export default function SignupMain() {
       !formData.confirm_password.trim() ||
       !formData.cityName.trim()
     ) {
-      console.log('formData : ', formData);
       setValidationError('Please fill in all fields.');
       return false;
     }
