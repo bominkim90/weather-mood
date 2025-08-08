@@ -1,4 +1,8 @@
-import { getRecords, removeRecord, updateRecord } from '@/api/record';
+import postRecord, {
+  getRecords,
+  removeRecord,
+  updateRecord,
+} from '@/api/record';
 import { MoodRecordsStatus } from '@/model/record';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -10,6 +14,18 @@ export function useGetRecordsQuery(start: string, end: string) {
     enabled: !!start && !!end,
     staleTime: 1000 * 60 * 60 * 24,
     gcTime: 1000 * 60 * 60 * 24,
+  });
+}
+
+// 감정 등록
+export function useAddRecordQuery() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: postRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['moodRecords'] }); // 감정 기록 수동 갱신
+    },
   });
 }
 
