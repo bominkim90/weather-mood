@@ -7,6 +7,7 @@ import getTodayDate from '@/util/getTodayDate';
 import ErrorMsg from '@/components/error/ErrorMsg';
 import { AddMoodData } from '@/model/addMoodData';
 import { useNavigate } from 'react-router-dom';
+import getProfile from '@/api/profile';
 
 export default function MoodAddMain() {
   const navigate = useNavigate();
@@ -30,7 +31,21 @@ export default function MoodAddMain() {
     // 감정 등록
     addRecordMutate(moodData, {
       onSuccess: () => {
-        navigate('/');
+        // location(cityName) 불러오기
+        getProfile()
+          .then((res) => {
+            console.log(res);
+            if (res.cityName) {
+              setMoodData((prev) => ({
+                ...prev,
+                location: res.cityName,
+              }));
+            }
+            navigate('/');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       },
       onError: () => {
         console.log('error');
