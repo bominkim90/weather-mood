@@ -21,11 +21,12 @@ export default function MoodEntryModalBody({
 
   // Edit 모드 상태 관리
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedEmotion, setEditedEmotion] = useState(data.id);
+  const [editedEmotion, setEditedEmotion] = useState(data.feelingId);
   const [editedNotes, setEditedNotes] = useState(data.memo);
 
   // 변경사항 감지
-  const hasChanges = editedEmotion !== data.id || editedNotes !== data.memo;
+  const hasChanges =
+    editedEmotion !== data.feelingId || editedNotes !== data.memo;
 
   const onClickDelete = () => {
     console.log('Delete 버튼 클릭');
@@ -47,7 +48,7 @@ export default function MoodEntryModalBody({
 
   const onClickCancel = () => {
     setIsEditMode(false);
-    setEditedEmotion(data.id);
+    setEditedEmotion(data.feelingId);
     setEditedNotes(data.memo);
   };
 
@@ -110,7 +111,7 @@ export default function MoodEntryModalBody({
             <>
               <img
                 className="w-[40px] h-[40px]"
-                src={`/icons/emotion/emotion_${data.id}.svg`}
+                src={`/icons/emotion/emotion_${data.feelingId}.svg`}
                 alt="mood"
               />
               <strong className="text-lg font-medium">{data.feeling}</strong>
