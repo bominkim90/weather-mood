@@ -3,7 +3,11 @@
 날씨와 감정을 연결하여 기록하고 시각화하는 감정 일기 애플리케이션입니다.
 
 ## 시연 영상
-https://github.com/user-attachments/assets/08446153-d110-43d8-84b1-d3d7c71ae505
+
+
+https://github.com/user-attachments/assets/ad8b086d-ae15-418f-aa62-b79a5aa4f123
+
+
 
 
 ## 핵심 기술 스택
